@@ -46,11 +46,39 @@ let currentQuiz = [];
 
 // --- Datos de preguntas por idioma/nivel ---
 const quizSets = {
-    japanese: [
+    // Japonés
+    japanese_basico: [
         { word: "こんにちは", options: ["Hola", "Adiós", "Gracias", "Agua"], correct: 0 },
-        { word: "ありがとう", options: ["Perdón", "Gracias", "Casa", "Comer"], correct: 1 },
-        { word: "水", options: ["Fuego", "Agua", "Tierra", "Aire"], correct: 1 }
+        { word: "さようなら", options: ["Adiós", "Hola", "Perdón", "Casa"], correct: 0 },
+        { word: "ありがとう", options: ["Gracias", "Agua", "Comer", "Dormir"], correct: 0 }
     ],
+    japanese_intermedio: [
+        { word: "学校", options: ["Escuela", "Casa", "Libro", "Mesa"], correct: 0 },
+        { word: "先生", options: ["Profesor", "Estudiante", "Amigo", "Padre"], correct: 0 },
+        { word: "友達", options: ["Amigo", "Trabajo", "Viaje", "Comida"], correct: 0 }
+    ],
+    japanese_avanzado: [
+        { word: "経済", options: ["Economía", "Historia", "Matemáticas", "Política"], correct: 0 },
+        { word: "文化", options: ["Cultura", "Lengua", "País", "Fiesta"], correct: 0 },
+        { word: "自然", options: ["Naturaleza", "Ciudad", "Tecnología", "Trabajo"], correct: 0 }
+    ],
+    japanese_kanji: [
+        { word: "火", options: ["Fuego", "Agua", "Tierra", "Aire"], correct: 0 },
+        { word: "木", options: ["Árbol", "Casa", "Libro", "Puerta"], correct: 0 },
+        { word: "山", options: ["Montaña", "Río", "Mar", "Valle"], correct: 0 }
+    ],
+    japanese_verbos: [
+        { word: "食べる", options: ["Comer", "Beber", "Dormir", "Correr"], correct: 0 },
+        { word: "見る", options: ["Ver", "Escuchar", "Hablar", "Caminar"], correct: 0 },
+        { word: "書く", options: ["Escribir", "Leer", "Cantar", "Jugar"], correct: 0 }
+    ],
+    japanese_avanzado2: [
+        { word: "哲学", options: ["Filosofía", "Matemáticas", "Historia", "Arte"], correct: 0 },
+        { word: "文学", options: ["Literatura", "Ciencia", "Economía", "Política"], correct: 0 },
+        { word: "心理学", options: ["Psicología", "Biología", "Química", "Física"], correct: 0 }
+    ],
+
+    // Inglés niveles
     english_a1: [
         { word: "Dog", options: ["Perro", "Gato", "Casa", "Agua"], correct: 0 },
         { word: "House", options: ["Casa", "Carro", "Libro", "Mesa"], correct: 0 },
@@ -141,64 +169,4 @@ function updateProgress() {
 }
 
 function showResults() {
-    showScreen(screenResults);
-    finalScore.textContent = `Tu puntuación final: ${score}/${currentQuiz.length}`;
-}
-
-// --- Pronunciación ---
-const pronunciationWord = document.getElementById("pronunciation-word");
-const startSpeechBtn = document.getElementById("start-speech");
-const speechFeedback = document.getElementById("speech-feedback");
-const nextPronunciationBtn = document.getElementById("next-pronunciation");
-
-const pronunciationDeck = ["こんにちは", "ありがとう", "さようなら", "水", "食べる"];
-let currentPronIndex = 0;
-
-function loadPronunciationWord() {
-    pronunciationWord.textContent = pronunciationDeck[currentPronIndex];
-    speechFeedback.textContent = "";
-}
-
-startSpeechBtn.addEventListener("click", () => {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = "ja-JP"; // japonés
-    recognition.start();
-
-    recognition.onresult = (event) => {
-        const spoken = event.results[0][0].transcript;
-        if (spoken === pronunciationDeck[currentPronIndex]) {
-            speechFeedback.textContent = "✅ ¡Correcto!";
-            speechFeedback.className = "feedback correct";
-        } else {
-            speechFeedback.textContent = "❌ Intenta de nuevo";
-            speechFeedback.className = "feedback incorrect";
-        }
-    };
-
-    recognition.onerror = () => {
-        speechFeedback.textContent = "Error al reconocer la voz";
-        speechFeedback.className = "feedback incorrect";
-    };
-});
-
-nextPronunciationBtn.addEventListener("click", () => {
-    currentPronIndex++;
-    if (currentPronIndex >= pronunciationDeck.length) {
-        currentPronIndex = 0;
-    }
-    loadPronunciationWord();
-});
-
-// --- Conexión de mazos y niveles ---
-document.querySelectorAll(".deck").forEach(el => {
-    el.addEventListener("click", () => {
-        startQuiz("japanese");
-    });
-});
-
-document.querySelectorAll(".level").forEach(el => {
-    el.addEventListener("click", () => {
-        const level = el.dataset.level; // a1, a2, b1, b2, c1, c2
-        startQuiz("english_" + level);
-    });
-});
+    show
