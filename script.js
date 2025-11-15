@@ -23,6 +23,7 @@ let score = 0;
 let totalQuestions = 0;
 let usedIndices = [];
 let currentCorrectAnswer = "";
+let answeredCorrectly = false;
 
 // Elementos del DOM
 const japaneseWordElement = document.getElementById('japanese-word');
@@ -41,6 +42,7 @@ function initGame() {
     score = 0;
     totalQuestions = 0;
     usedIndices = [];
+    answeredCorrectly = false;
     updateScore();
     showQuestion();
     resultsElement.style.display = 'none';
@@ -53,6 +55,7 @@ function showQuestion() {
     feedbackElement.textContent = '';
     feedbackElement.className = 'feedback';
     nextBtn.disabled = true;
+    answeredCorrectly = false;
     
     // Verificar si ya se usaron todas las palabras
     if (usedIndices.length >= vocabulary.length) {
@@ -112,7 +115,10 @@ function generateOptions(correctAnswer) {
 
 // Verificar respuesta
 function checkAnswer(selectedOption, optionElement) {
-    // Deshabilitar todas las opciones
+    // Si ya se respondió correctamente, no hacer nada
+    if (answeredCorrectly) return;
+    
+    // Deshabilitar todas las opciones temporalmente para la animación
     const allOptions = document.querySelectorAll('.option');
     allOptions.forEach(opt => {
         opt.style.pointerEvents = 'none';
@@ -124,11 +130,17 @@ function checkAnswer(selectedOption, optionElement) {
         feedbackElement.textContent = '¡Correcto! 🎉';
         feedbackElement.classList.add('correct');
         score++;
+        answeredCorrectly = true;
         nextBtn.disabled = false;
+        
+        // Mantener opciones deshabilitadas cuando es correcto
+        allOptions.forEach(opt => {
+            opt.style.pointerEvents = 'none';
+        });
     } else {
-        // Respuesta incorrecta
+        // Respuesta incorrecta - PERMITIR REINTENTAR
         optionElement.classList.add('incorrect');
-        feedbackElement.textContent = 'Incorrecto ❌ - Intenta de nuevo';
+        feedbackElement.textContent = 'Incorrecto ❌ - ¡Intenta de nuevo!';
         feedbackElement.classList.add('incorrect');
         
         // Mostrar la respuesta correcta
@@ -137,6 +149,21 @@ function checkAnswer(selectedOption, optionElement) {
                 opt.classList.add('correct');
             }
         });
+        
+        // Reactivar las opciones después de un breve momento para permitir reintentos
+        setTimeout(() => {
+            allOptions.forEach(opt => {
+                opt.style.pointerEvents = 'auto';
+                // Quitar clases de incorrecto pero mantener la correcta marcada
+                if (!opt.classList.contains('correct')) {
+                    opt.classList.remove('incorrect');
+                }
+            });
+            // Quitar la clase incorrecta del elemento clickeado (excepto si es la correcta)
+            if (!optionElement.classList.contains('correct')) {
+                optionElement.classList.remove('incorrect');
+            }
+        }, 1000);
     }
     
     updateScore();
