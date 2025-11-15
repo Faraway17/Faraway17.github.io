@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Vocabulario Japonés</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🇯🇵 Quiz de Vocabulario Japonés</h1>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="score" id="score">Puntuación: 0/0</div>
+        
+        <div class="quiz-area">
+            <div class="japanese-word" id="japanese-word">読み込み中...</div>
+            
+            <div class="options-container" id="options-container">
+                <!-- Las opciones se cargan aquí -->
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
+            
+            <button class="next-btn" id="next-btn" disabled>Siguiente Palabra →</button>
+        </div>
+        
+        <div class="results" id="results" style="display: none;">
+            <h2>🎉 ¡Quiz Completado!</h2>
+            <p id="final-score">Tu puntuación final: 0/0</p>
+            <button class="restart-btn" id="restart-btn">Jugar Otra Vez</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
