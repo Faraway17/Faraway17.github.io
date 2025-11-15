@@ -6,8 +6,8 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #333;
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    color: #2d3436;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -19,26 +19,28 @@ body {
     background: white;
     border-radius: 20px;
     padding: 40px 30px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     text-align: center;
     max-width: 600px;
     width: 100%;
+    border: 1px solid #dfe6e9;
 }
 
 h1 {
     font-size: 2.2em;
     margin-bottom: 20px;
-    color: #2d3748;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #2d3436;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-weight: 700;
 }
 
 .progress-container {
     width: 100%;
     height: 12px;
-    background: #e2e8f0;
+    background: #dfe6e9;
     border-radius: 10px;
     margin: 20px 0;
     overflow: hidden;
@@ -47,7 +49,7 @@ h1 {
 
 .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #48bb78, #38a169);
+    background: linear-gradient(90deg, #00b894, #00a085);
     width: 0%;
     border-radius: 10px;
     transition: width 0.5s ease;
@@ -56,34 +58,34 @@ h1 {
 .score {
     font-size: 1.3em;
     margin: 20px 0;
-    color: #4a5568;
+    color: #636e72;
     font-weight: 600;
-    background: #f7fafc;
+    background: #f8f9fa;
     padding: 10px 20px;
     border-radius: 25px;
     display: inline-block;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #e9ecef;
 }
 
-/* VOCABULARIO EN GRANDE - EL FOCO PRINCIPAL */
+/* VOCABULARIO EN GRANDE */
 .japanese-word {
     font-size: 4em;
     margin: 30px 0;
     font-weight: bold;
-    color: #e53e3e;
+    color: #e84393;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f7fafc;
+    background: #f8f9fa;
     padding: 25px;
     border-radius: 15px;
-    border: 3px solid #e2e8f0;
+    border: 3px solid #e9ecef;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* 4 CUADRADOS SEPARADOS BIEN DEFINIDOS */
+/* 4 CUADRADOS SEPARADOS */
 .options-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -92,7 +94,7 @@ h1 {
 }
 
 .option {
-    background: #4a5568;
+    background: #6c5ce7;
     border: none;
     border-radius: 12px;
     padding: 25px 15px;
@@ -106,25 +108,25 @@ h1 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(108, 92, 231, 0.2);
 }
 
 .option:hover {
-    background: #2d3748;
+    background: #5b4fcf;
     transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 12px rgba(108, 92, 231, 0.3);
 }
 
 .option.correct {
-    background: #48bb78;
+    background: #00b894;
     transform: scale(1.02);
-    box-shadow: 0 6px 12px rgba(72, 187, 120, 0.3);
+    box-shadow: 0 6px 12px rgba(0, 184, 148, 0.3);
 }
 
 .option.incorrect {
-    background: #f56565;
+    background: #e84393;
     transform: scale(0.98);
-    box-shadow: 0 4px 8px rgba(245, 101, 101, 0.3);
+    box-shadow: 0 4px 8px rgba(232, 67, 147, 0.3);
 }
 
 .option:disabled {
@@ -145,19 +147,19 @@ h1 {
 }
 
 .feedback.correct {
-    color: #48bb78;
-    background: #f0fff4;
-    border: 2px solid #c6f6d5;
+    color: #00b894;
+    background: #f1fbf9;
+    border: 2px solid #b2f2e6;
 }
 
 .feedback.incorrect {
-    color: #f56565;
-    background: #fff5f5;
-    border: 2px solid #fed7d7;
+    color: #e84393;
+    background: #fdf2f8;
+    border: 2px solid #f8cde2;
 }
 
 .next-btn, .restart-btn {
-    background: #3182ce;
+    background: #0984e3;
     color: white;
     border: none;
     border-radius: 10px;
@@ -167,55 +169,60 @@ h1 {
     margin: 15px 0;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(49, 130, 206, 0.3);
+    box-shadow: 0 4px 8px rgba(9, 132, 227, 0.3);
 }
 
 .next-btn:hover, .restart-btn:hover {
-    background: #2c5aa0;
+    background: #0770c4;
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(49, 130, 206, 0.4);
+    box-shadow: 0 6px 12px rgba(9, 132, 227, 0.4);
 }
 
 .next-btn:disabled {
-    background: #a0aec0;
+    background: #b2bec3;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
 .restart-btn {
-    background: #ed8936;
+    background: #fdcb6e;
+    color: #2d3436;
 }
 
 .restart-btn:hover {
-    background: #dd7711;
-    box-shadow: 0 6px 12px rgba(237, 137, 54, 0.4);
+    background: #fdc14e;
+    box-shadow: 0 6px 12px rgba(253, 203, 110, 0.4);
 }
 
 .results {
     margin-top: 30px;
     padding: 30px;
-    background: #f7fafc;
+    background: #f8f9fa;
     border-radius: 15px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #e9ecef;
 }
 
 .results h2 {
     font-size: 2.2em;
     margin-bottom: 20px;
-    color: #2d3748;
+    color: #2d3436;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 #final-score {
     font-size: 1.5em;
     margin: 20px 0;
-    color: #4a5568;
+    color: #636e72;
     font-weight: 600;
     background: white;
     padding: 15px 25px;
     border-radius: 10px;
     display: inline-block;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #e9ecef;
 }
 
 /* Responsive */
