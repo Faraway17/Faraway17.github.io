@@ -422,4 +422,308 @@ function backToSelection() {
     } else {
         showScreen('englishLevels');
     }
+    // ... (mantener toda la base de datos y variables anteriores) ...
+
+// Variables para reconocimiento de voz
+let recognition;
+let isRecording = false;
+let speechTimeout;
+
+// Inicializar eventos cuando la página cargue
+document.addEventListener('DOMContentLoaded', function() {
+    // ... (mantener todos los event listeners anteriores) ...
+
+    // Botones de reconocimiento de voz
+    document.getElementById('start-speech-btn').addEventListener('click', startSpeechRecognition);
+    document.getElementById('stop-speech-btn').addEventListener('click', stopSpeechRecognition);
+
+    // Inicializar reconocimiento de voz
+    initializeSpeechRecognition();
+
+    // ... (resto de event listeners) ...
+});
+
+// Inicializar reconocimiento de voz
+function initializeSpeechRecognition() {
+    // Verificar si el navegador soporta reconocimiento de voz
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        console.warn('El reconocimiento de voz no es compatible con este navegador');
+        document.getElementById('speech-text').textContent = 'Reconocimiento de voz no compatible';
+        document.getElementById('start-speech-btn').disabled = true;
+        return;
+    }
+
+    // Crear instancia de reconocimiento de voz
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+
+    // Configurar reconocimiento
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = currentType === 'english' ? 'en-US' : 'ja-JP';
+    recognition.maxAlternatives = 3; // Obtener alternativas para mejor comparación
+
+    // Eventos de reconocimiento
+    recognition.onstart = function() {
+        console.log('Reconocimiento de voz iniciado');
+        updateSpeechUI(true);
+    };
+
+    recognition.onresult = function(event) {
+        const result = event.results[0];
+        const transcript = result[0].transcript.trim().toLowerCase();
+        const confidence = result[0].confidence;
+        
+        console.log('Texto reconocido:', transcript, 'Confianza:', confidence);
+        processSpeechResult(transcript, confidence);
+    };
+
+    recognition.onerror = function(event) {
+        console.error('Error en reconocimiento de voz:', event.error);
+        handleSpeechError(event.error);
+    };
+
+    recognition.onend = function() {
+        console.log('Reconocimiento de voz finalizado');
+        if (isRecording) {
+            // Si aún está grabando, reiniciar (para continuous mode)
+            setTimeout(() => {
+                if (isRecording) {
+                    recognition.start();
+                }
+            }, 100);
+        } else {
+            updateSpeechUI(false);
+        }
+    };
+}
+
+// Iniciar reconocimiento de voz
+function startSpeechRecognition() {
+    if (!recognition) {
+        initializeSpeechRecognition();
+    }
+    
+    if (recognition && !isRecording) {
+        try {
+            recognition.lang = currentType === 'english' ? 'en-US' : 'ja-JP';
+            recognition.start();
+            isRecording = true;
+            
+            // Timeout de seguridad
+            speechTimeout = setTimeout(() => {
+                if (isRecording) {
+                    stopSpeechRecognition();
+                    handleSpeechError('timeout');
+                }
+            }, 10000); // 10 segundos máximo
+        } catch (error) {
+            console.error('Error al iniciar reconocimiento:', error);
+            handleSpeechError('start_failed');
+        }
+    }
+}
+
+// Detener reconocimiento de voz
+function stopSpeechRecognition() {
+    if (recognition && isRecording) {
+        isRecording = false;
+        clearTimeout(speechTimeout);
+        
+        try {
+            recognition.stop();
+        } catch (error) {
+            console.error('Error al detener reconocimiento:', error);
+        }
+        
+        updateSpeechUI(false);
+    }
+}
+
+// Procesar resultado del reconocimiento de voz
+function processSpeechResult(transcript, confidence) {
+    const speechResult = document.getElementById('speech-result');
+    const correctAnswer = document.getElementById('correct-answer');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    
+    // Limpiar resultados anteriores
+    speechResult.textContent = `Dijiste: "${transcript}"`;
+    speechResult.className = 'speech-result';
+    
+    // Mostrar confianza
+    const confidencePercent = Math.round(confidence * 100);
+    speechResult.textContent += ` (${confidencePercent}% de confianza)`;
+    
+    // Verificar si la pronunciación es correcta
+    const expectedWord = currentCorrectAnswer.toLowerCase();
+    const userWords = transcript.toLowerCase().split(' ');
+    
+    // Comparación flexible (puede contener la palabra)
+    let isCorrect = userWords.some(word => 
+        word === expectedWord || 
+        expectedWord.includes(word) || 
+        word.includes(expectedWord)
+    );
+    
+    // Para inglés, comparación más estricta
+    if (currentType === 'english') {
+        isCorrect = userWords.includes(expectedWord) || transcript === expectedWord;
+    }
+    
+    if (isCorrect && confidence > 0.6) {
+        // Pronunciación correcta
+        speechResult.className = 'speech-result correct';
+        speechResult.textContent = `✅ Correcto! Dijiste: "${transcript}"`;
+        feedback.textContent = '¡Excelente pronunciación! 🎉';
+        feedback.className = 'feedback correct';
+        score++;
+        nextBtn.disabled = false;
+    } else {
+        // Pronunciación incorrecta o baja confianza
+        speechResult.className = 'speech-result incorrect';
+        feedback.textContent = 'Pronunciación incorrecta o poco clara ❌';
+        feedback.className = 'feedback incorrect';
+        correctAnswer.textContent = `La pronunciación correcta es: "${currentCorrectAnswer}"`;
+        correctAnswer.style.display = 'block';
+        
+        // Permitir reintentar
+        setTimeout(() => {
+            if (!nextBtn.disabled) return;
+            feedback.textContent = 'Intenta pronunciarlo de nuevo';
+            feedback.classList.remove('incorrect');
+            correctAnswer.style.display = 'none';
+        }, 3000);
+    }
+    
+    // Actualizar puntuación
+    document.getElementById('score').textContent = `Puntuación: ${score}/${totalQuestions}`;
+    stopSpeechRecognition();
+}
+
+// Manejar errores de reconocimiento de voz
+function handleSpeechError(error) {
+    const feedback = document.getElementById('feedback');
+    const speechText = document.getElementById('speech-text');
+    
+    let errorMessage = 'Error en el reconocimiento de voz';
+    
+    switch (error) {
+        case 'no-speech':
+            errorMessage = 'No se detectó voz. Intenta de nuevo.';
+            break;
+        case 'audio-capture':
+            errorMessage = 'No se pudo acceder al micrófono.';
+            break;
+        case 'not-allowed':
+            errorMessage = 'Permiso de micrófono denegado.';
+            break;
+        case 'timeout':
+            errorMessage = 'Tiempo de grabación agotado.';
+            break;
+        case 'start_failed':
+            errorMessage = 'No se pudo iniciar el reconocimiento.';
+            break;
+        default:
+            errorMessage = `Error: ${error}`;
+    }
+    
+    feedback.textContent = errorMessage;
+    feedback.className = 'feedback incorrect';
+    speechText.textContent = 'Error - Intenta de nuevo';
+    
+    updateSpeechUI(false);
+}
+
+// Actualizar UI del reconocimiento de voz
+function updateSpeechUI(recording) {
+    const speechStatus = document.getElementById('speech-status');
+    const speechText = document.getElementById('speech-text');
+    const micIcon = document.getElementById('mic-icon');
+    const startBtn = document.getElementById('start-speech-btn');
+    const stopBtn = document.getElementById('stop-speech-btn');
+    
+    if (recording) {
+        speechStatus.classList.add('recording');
+        speechText.classList.add('recording');
+        speechText.innerHTML = '<span class="recording-indicator"></span>Grabando... Habla ahora';
+        micIcon.textContent = '🎙️';
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+    } else {
+        speechStatus.classList.remove('recording');
+        speechText.classList.remove('recording');
+        speechText.textContent = 'Presiona el botón y habla';
+        micIcon.textContent = '🎤';
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        isRecording = false;
+    }
+}
+
+// Modificar startGame para el modo pronunciación
+function startGame() {
+    usedWords = [];
+    score = 0;
+    totalQuestions = 0;
+    
+    // Configurar según el modo
+    const quizSection = document.getElementById('quiz-section');
+    const pronunciationSection = document.getElementById('pronunciation-section');
+    const instruction = document.getElementById('game-instruction');
+    const correctAnswer = document.getElementById('correct-answer');
+    
+    // Limpiar resultados anteriores
+    correctAnswer.style.display = 'none';
+    document.getElementById('speech-result').textContent = '';
+    document.getElementById('speech-result').className = 'speech-result';
+    
+    if (currentGameMode === 'quiz') {
+        quizSection.style.display = 'block';
+        pronunciationSection.style.display = 'none';
+        instruction.textContent = 'Elige la traducción correcta:';
+    } else {
+        quizSection.style.display = 'none';
+        pronunciationSection.style.display = 'block';
+        instruction.textContent = currentType === 'japanese' 
+            ? 'Pronuncia la palabra en japonés:' 
+            : 'Pronuncia la palabra en inglés:';
+        
+        // Agregar hint de pronunciación
+        instruction.innerHTML += '<div class="pronunciation-hint">Haz clic en "Iniciar Grabación" y habla claramente</div>';
+        
+        // Reiniciar UI de voz
+        updateSpeechUI(false);
+    }
+    
+    // Actualizar título
+    const gameTitle = document.getElementById('game-title');
+    gameTitle.textContent = currentType === 'japanese' 
+        ? `🎌 ${currentGameMode === 'quiz' ? 'Quiz Japonés' : 'Pronunciación Japonesa'}` 
+        : `🇬🇧 ${currentGameMode === 'quiz' ? 'Quiz Inglés' : 'Pronunciación Inglesa'}`;
+    
+    showScreen('game');
+    nextQuestion();
+}
+
+// Modificar nextQuestion para modo pronunciación
+function nextQuestion() {
+    // ... (código anterior) ...
+    
+    // En modo pronunciación, mostrar la palabra que deben pronunciar
+    if (currentGameMode === 'pronunciation') {
+        wordDisplay.textContent = randomWord.word;
+        currentCorrectAnswer = randomWord.word.toLowerCase();
+        
+        // Limpiar resultados anteriores
+        document.getElementById('speech-result').textContent = '';
+        document.getElementById('speech-result').className = 'speech-result';
+        document.getElementById('correct-answer').style.display = 'none';
+        updateSpeechUI(false);
+    }
+    
+    // ... (resto del código) ...
+}
+
+// ... (mantener el resto de funciones igual) ...
 }
