@@ -118,52 +118,46 @@ function checkAnswer(selectedOption, optionElement) {
     // Si ya se respondió correctamente, no hacer nada
     if (answeredCorrectly) return;
     
-    // Deshabilitar todas las opciones temporalmente para la animación
+    // Deshabilitar todas las opciones temporalmente
     const allOptions = document.querySelectorAll('.option');
     allOptions.forEach(opt => {
         opt.style.pointerEvents = 'none';
     });
     
     if (selectedOption === currentCorrectAnswer) {
-        // Respuesta correcta
-        optionElement.classList.add('correct');
-        feedbackElement.textContent = '¡Correcto! 🎉';
-        feedbackElement.classList.add('correct');
-        score++;
+        // Respuesta correcta - MOSTRAR LA CORRECTA EN VERDE
         answeredCorrectly = true;
-        nextBtn.disabled = false;
+        score++;
         
-        // Mantener opciones deshabilitadas cuando es correcto
-        allOptions.forEach(opt => {
-            opt.style.pointerEvents = 'none';
-        });
-    } else {
-        // Respuesta incorrecta - PERMITIR REINTENTAR
-        optionElement.classList.add('incorrect');
-        feedbackElement.textContent = 'Incorrecto ❌ - ¡Intenta de nuevo!';
-        feedbackElement.classList.add('incorrect');
-        
-        // Mostrar la respuesta correcta
+        // Mostrar todas las respuestas correctas
         allOptions.forEach(opt => {
             if (opt.textContent === currentCorrectAnswer) {
                 opt.classList.add('correct');
             }
         });
         
+        feedbackElement.textContent = '¡Correcto! 🎉';
+        feedbackElement.classList.add('correct');
+        nextBtn.disabled = false;
+        
+    } else {
+        // Respuesta incorrecta - SOLO MARCAR LA INCORRECTA EN ROJO TEMPORAL
+        optionElement.classList.add('temporary-incorrect');
+        feedbackElement.textContent = 'Incorrecto ❌ - ¡Intenta de nuevo!';
+        feedbackElement.classList.add('incorrect');
+        
         // Reactivar las opciones después de un breve momento para permitir reintentos
         setTimeout(() => {
-            allOptions.forEach(opt => {
-                opt.style.pointerEvents = 'auto';
-                // Quitar clases de incorrecto pero mantener la correcta marcada
-                if (!opt.classList.contains('correct')) {
-                    opt.classList.remove('incorrect');
-                }
-            });
-            // Quitar la clase incorrecta del elemento clickeado (excepto si es la correcta)
-            if (!optionElement.classList.contains('correct')) {
-                optionElement.classList.remove('incorrect');
+            if (!answeredCorrectly) {
+                allOptions.forEach(opt => {
+                    opt.style.pointerEvents = 'auto';
+                    // Quitar la clase temporal de incorrecto
+                    opt.classList.remove('temporary-incorrect');
+                });
+                feedbackElement.textContent = '¡Elige otra opción!';
+                feedbackElement.classList.remove('incorrect');
             }
-        }, 1000);
+        }, 800);
     }
     
     updateScore();
