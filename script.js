@@ -24,8 +24,12 @@ document.getElementById("back-from-pronunciation").addEventListener("click", () 
 document.getElementById("back-to-selection").addEventListener("click", () => showScreen(screenLanguage));
 
 // --- Navegación inicial ---
-japaneseBtn.addEventListener("click", () => showScreen(screenJapaneseDecks));
-englishBtn.addEventListener("click", () => showScreen(screenEnglishLevels));
+japaneseBtn.addEventListener("click", () => {
+    showScreen(screenJapaneseDecks);
+});
+englishBtn.addEventListener("click", () => {
+    showScreen(screenEnglishLevels);
+});
 pronunciationBtn.addEventListener("click", () => {
     showScreen(screenPronunciation);
     loadPronunciationWord();
@@ -45,21 +49,9 @@ let score = 0;
 
 // Ejemplo de preguntas (puedes ampliar)
 const quizData = [
-    {
-        word: "こんにちは",
-        options: ["Hola", "Adiós", "Gracias", "Agua"],
-        correct: 0
-    },
-    {
-        word: "ありがとう",
-        options: ["Perdón", "Gracias", "Casa", "Comer"],
-        correct: 1
-    },
-    {
-        word: "水",
-        options: ["Fuego", "Agua", "Tierra", "Aire"],
-        correct: 1
-    }
+    { word: "こんにちは", options: ["Hola", "Adiós", "Gracias", "Agua"], correct: 0 },
+    { word: "ありがとう", options: ["Perdón", "Gracias", "Casa", "Comer"], correct: 1 },
+    { word: "水", options: ["Fuego", "Agua", "Tierra", "Aire"], correct: 1 }
 ];
 
 function startQuiz() {
