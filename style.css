@@ -15,6 +15,96 @@ body {
     padding: 20px;
 }
 
+/* PANTALLA DE SELECCIÓN DE MAZOS */
+.deck-selection {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selection-container {
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    border: 1px solid #334155;
+}
+
+.selection-container h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #f1f5f9;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #cbd5e1;
+    margin-bottom: 40px;
+}
+
+.decks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.deck-card {
+    background: #334155;
+    border: 2px solid #475569;
+    border-radius: 15px;
+    padding: 30px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.deck-card:hover {
+    background: #475569;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-color: #60a5fa;
+}
+
+.deck-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.deck-card h3 {
+    font-size: 1.5em;
+    color: #f1f5f9;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.deck-card p {
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.deck-stats {
+    background: #1e293b;
+    color: #60a5fa;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-block;
+    border: 1px solid #475569;
+}
+
+/* PANTALLA DEL JUEGO */
+.game-container {
+    width: 100%;
+}
+
 .container {
     background: #1e293b;
     border-radius: 16px;
@@ -24,9 +114,10 @@ body {
     max-width: 600px;
     width: 100%;
     border: 1px solid #334155;
+    margin: 0 auto;
 }
 
-h1 {
+.container h1 {
     font-size: 2.2em;
     margin-bottom: 20px;
     color: #f1f5f9;
@@ -214,6 +305,15 @@ h1 {
 
 /* Responsive */
 @media (max-width: 600px) {
+    .selection-container {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+    
+    .decks-container {
+        grid-template-columns: 1fr;
+    }
+    
     .container {
         padding: 25px 20px;
         margin: 10px;
