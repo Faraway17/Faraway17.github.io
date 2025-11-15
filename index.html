@@ -3,69 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz de Vocabulario Japonés</title>
+    <title>Quiz Japonés</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- PANTALLA DE SELECCIÓN DE MAZOS -->
-    <div class="deck-selection" id="deck-selection">
-        <div class="selection-container">
-            <h1>🇯🇵 Elige tu Mazo</h1>
-            <p class="subtitle">Selecciona un conjunto de palabras para practicar</p>
-            
-            <div class="decks-container">
-                <div class="deck-card" data-deck="basico">
+    <!-- PANTALLA MAZOS -->
+    <div id="screen-decks" class="screen active">
+        <div class="container">
+            <h1>🎌 Elige tu Mazo</h1>
+            <div class="decks">
+                <div class="deck" onclick="selectDeck('basico')">
                     <div class="deck-icon">🎯</div>
                     <h3>Básico</h3>
-                    <p>Palabras fundamentales para empezar</p>
-                    <div class="deck-stats">6 palabras</div>
+                    <p>6 palabras fundamentales</p>
                 </div>
-                
-                <div class="deck-card" data-deck="intermedio">
+                <div class="deck" onclick="selectDeck('intermedio')">
                     <div class="deck-icon">⚡</div>
                     <h3>Intermedio</h3>
-                    <p>Vocabulario para nivel intermedio</p>
-                    <div class="deck-stats">6 palabras</div>
+                    <p>6 palabras nivel medio</p>
                 </div>
-                
-                <div class="deck-card" data-deck="avanzado">
+                <div class="deck" onclick="selectDeck('avanzado')">
                     <div class="deck-icon">🔥</div>
                     <h3>Avanzado</h3>
-                    <p>Palabras complejas y expresiones</p>
-                    <div class="deck-stats">6 palabras</div>
+                    <p>6 palabras complejas</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PANTALLA DEL JUEGO (OCULTA INICIALMENTE) -->
-    <div class="game-container" id="game-container" style="display: none;">
+    <!-- PANTALLA JUEGO -->
+    <div id="screen-game" class="screen">
         <div class="container">
-            <h1>🇯🇵 Quiz de Vocabulario Japonés</h1>
-            
-            <div class="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
+            <h1>🎌 Quiz Japonés</h1>
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
             </div>
-            
-            <div class="score" id="score">Puntuación: 0/0</div>
-            
-            <div class="quiz-area">
-                <div class="japanese-word" id="japanese-word">読み込み中...</div>
-                
-                <div class="options-container" id="options-container">
-                    <!-- Las opciones se cargan aquí -->
-                </div>
-                
-                <div class="feedback" id="feedback"></div>
-                
-                <button class="next-btn" id="next-btn" disabled>Siguiente Palabra →</button>
-            </div>
-            
-            <div class="results" id="results" style="display: none;">
-                <h2>🎉 ¡Quiz Completado!</h2>
-                <p id="final-score">Tu puntuación final: 0/0</p>
-                <button class="restart-btn" id="restart-btn">Volver a Mazos</button>
-            </div>
+            <div id="score" class="score">Puntuación: 0/0</div>
+            <div id="japanese-word" class="japanese-word">準備中</div>
+            <div id="options" class="options"></div>
+            <div id="feedback" class="feedback"></div>
+            <button id="next-btn" onclick="nextQuestion()" disabled>Siguiente →</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA RESULTADOS -->
+    <div id="screen-results" class="screen">
+        <div class="container">
+            <h1>🎉 ¡Completado!</h1>
+            <div id="final-score" class="final-score"></div>
+            <button onclick="backToDecks()">Volver a Mazos</button>
         </div>
     </div>
 
