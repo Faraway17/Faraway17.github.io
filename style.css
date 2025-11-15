@@ -126,10 +126,6 @@ h1 {
     transform: scale(0.99);
 }
 
-.option:disabled {
-    cursor: not-allowed;
-}
-
 .feedback {
     margin: 25px 0;
     font-size: 1.3em;
