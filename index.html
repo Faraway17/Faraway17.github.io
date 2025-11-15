@@ -22,27 +22,12 @@
                     <h3>Inglés</h3>
                     <p>6 niveles de proficiency</p>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PANTALLA MODO DE JUEGO -->
-    <div id="screen-game-mode" class="screen">
-        <div class="container">
-            <h1 id="mode-title">🎌 Elige Modo de Juego</h1>
-            <div class="mode-options">
-                <div class="mode-card" id="quiz-mode-btn">
-                    <div class="mode-icon">❓</div>
-                    <h3>Modo Quiz</h3>
-                    <p>Elige la opción correcta entre múltiples opciones</p>
-                </div>
-                <div class="mode-card" id="pronunciation-mode-btn">
-                    <div class="mode-icon">🎤</div>
-                    <h3>Modo Pronunciación</h3>
-                    <p>Habla por el micrófono para practicar</p>
+                <div class="language-card" id="pronunciation-btn">
+                    <div class="language-icon">🗣️</div>
+                    <h3>Pronunciación</h3>
+                    <p>Practica diciendo palabras</p>
                 </div>
             </div>
-            <button class="back-btn" id="back-from-mode">← Volver</button>
         </div>
     </div>
 
@@ -134,41 +119,22 @@
                 <div id="progress" class="progress"></div>
             </div>
             <div id="score" class="score">Puntuación: 0/0</div>
-            
-            <!-- Elemento para mostrar instrucciones -->
-            <div id="game-instruction" class="instruction"></div>
-            
             <div id="word-display" class="word-display">準備中</div>
-            
-            <!-- Sección para modo quiz (opciones múltiples) -->
-            <div id="quiz-section">
-                <div id="options" class="options"></div>
-            </div>
-            
-            <!-- Sección para modo pronunciación (micrófono) -->
-            <div id="pronunciation-section" style="display: none;">
-                <div class="pronunciation-container">
-                    <div id="speech-status" class="speech-status">
-                        <div id="mic-icon" class="mic-icon">🎤</div>
-                        <div id="speech-text" class="speech-text">Presiona el botón y habla</div>
-                    </div>
-                    <div class="pronunciation-controls">
-                        <button id="start-speech-btn" class="speech-btn">
-                            <span class="btn-icon">🎤</span>
-                            Iniciar Grabación
-                        </button>
-                        <button id="stop-speech-btn" class="speech-btn stop" disabled>
-                            <span class="btn-icon">⏹️</span>
-                            Detener
-                        </button>
-                    </div>
-                    <div id="speech-result" class="speech-result"></div>
-                    <div id="correct-answer" class="correct-answer"></div>
-                </div>
-            </div>
-            
+            <div id="options" class="options"></div>
             <div id="feedback" class="feedback"></div>
             <button id="next-btn">Siguiente →</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA PRONUNCIACIÓN -->
+    <div id="screen-pronunciation" class="screen">
+        <div class="container">
+            <h1>🗣️ Pronunciación</h1>
+            <div id="pronunciation-word" class="word-display">準備中</div>
+            <button id="start-speech">🎤 Pronunciar</button>
+            <div id="speech-feedback" class="feedback"></div>
+            <button id="next-pronunciation">Siguiente →</button>
+            <button class="back-btn" id="back-from-pronunciation">← Volver</button>
         </div>
     </div>
 
