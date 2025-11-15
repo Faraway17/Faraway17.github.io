@@ -102,13 +102,12 @@ const englishLevels = {
 };
 
 // Variables del juego
-let currentLanguage = '';
 let currentDeck = [];
-let currentType = ''; // 'japanese' o 'english'
 let usedWords = [];
 let score = 0;
 let totalQuestions = 0;
 let currentCorrectAnswer = "";
+let currentType = ""; // 'japanese' o 'english'
 
 // Elementos del DOM
 const screens = {
@@ -119,38 +118,74 @@ const screens = {
     results: document.getElementById('screen-results')
 };
 
+// Inicializar eventos cuando la página cargue
+document.addEventListener('DOMContentLoaded', function() {
+    // Botones de idioma
+    document.getElementById('japanese-btn').addEventListener('click', function() {
+        showScreen('japaneseDecks');
+    });
+    
+    document.getElementById('english-btn').addEventListener('click', function() {
+        showScreen('englishLevels');
+    });
+
+    // Botones de volver
+    document.getElementById('back-from-japanese').addEventListener('click', function() {
+        showScreen('language');
+    });
+    
+    document.getElementById('back-from-english').addEventListener('click', function() {
+        showScreen('language');
+    });
+
+    // Botón siguiente pregunta
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+
+    // Botón volver a selección desde resultados
+    document.getElementById('back-to-selection').addEventListener('click', backToSelection);
+
+    // Eventos para mazos japoneses
+    document.querySelectorAll('#screen-japanese-decks .deck').forEach(deck => {
+        deck.addEventListener('click', function() {
+            const deckName = this.getAttribute('data-deck');
+            selectDeck(deckName, 'japanese');
+        });
+    });
+
+    // Eventos para niveles inglés
+    document.querySelectorAll('#screen-english-levels .level').forEach(level => {
+        level.addEventListener('click', function() {
+            const levelName = this.getAttribute('data-level');
+            selectLevel(levelName, 'english');
+        });
+    });
+
+    // Mostrar pantalla inicial
+    showScreen('language');
+});
+
 // Cambiar pantalla
 function showScreen(screenName) {
-    Object.values(screens).forEach(screen => screen.classList.remove('active'));
+    // Ocultar todas las pantallas
+    Object.values(screens).forEach(screen => {
+        screen.classList.remove('active');
+    });
+    
+    // Mostrar la pantalla solicitada
     screens[screenName].classList.add('active');
 }
 
-// Seleccionar idioma
-function selectLanguage(language) {
-    currentLanguage = language;
-    if (language === 'japanese') {
-        showScreen('japaneseDecks');
-    } else {
-        showScreen('englishLevels');
-    }
-}
-
-// Volver a selección de idioma
-function backToLanguage() {
-    showScreen('language');
-}
-
 // Seleccionar mazo japonés
-function selectDeck(deckName) {
+function selectDeck(deckName, type) {
     currentDeck = japaneseDecks[deckName];
-    currentType = 'japanese';
+    currentType = type;
     startGame();
 }
 
 // Seleccionar nivel inglés
-function selectLevel(levelName) {
+function selectLevel(levelName, type) {
     currentDeck = englishLevels[levelName];
-    currentType = 'english';
+    currentType = type;
     startGame();
 }
 
@@ -159,12 +194,12 @@ function startGame() {
     usedWords = [];
     score = 0;
     totalQuestions = 0;
-    showScreen('game');
     
     // Actualizar título según idioma
     const gameTitle = document.getElementById('game-title');
     gameTitle.textContent = currentType === 'japanese' ? '🎌 Quiz Japonés' : '🇬🇧 Quiz Inglés';
     
+    showScreen('game');
     nextQuestion();
 }
 
@@ -219,7 +254,9 @@ function nextQuestion() {
         const button = document.createElement('div');
         button.className = 'option';
         button.textContent = option;
-        button.onclick = () => checkAnswer(option, button);
+        button.addEventListener('click', function() {
+            checkAnswer(option, button);
+        });
         options.appendChild(button);
     });
 
@@ -229,45 +266,50 @@ function nextQuestion() {
     progress.style.width = `${(usedWords.length / currentDeck.length) * 100}%`;
 }
 
-// Verificar respuesta
+// Verificar respuesta - MODIFICADO: No mostrar respuesta correcta al equivocarse
 function checkAnswer(selected, element) {
     const options = document.querySelectorAll('.option');
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
 
-    // Deshabilitar todas las opciones
+    // Deshabilitar todas las opciones temporalmente
     options.forEach(opt => {
         opt.style.pointerEvents = 'none';
     });
 
     if (selected === currentCorrectAnswer) {
-        // Correcto
+        // Respuesta correcta - MOSTRAR LA CORRECTA EN VERDE
         element.classList.add('correct');
         feedback.textContent = '¡Correcto! 🎉';
         feedback.className = 'feedback correct';
         score++;
         nextBtn.disabled = false;
-    } else {
-        // Incorrecto
-        element.classList.add('incorrect');
-        feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
-        feedback.className = 'feedback incorrect';
         
-        // Mostrar la correcta
+        // Mostrar todas las respuestas correctas (solo cuando aciertas)
         options.forEach(opt => {
             if (opt.textContent === currentCorrectAnswer) {
                 opt.classList.add('correct');
             }
         });
+        
+    } else {
+        // Respuesta incorrecta - SOLO MARCAR LA INCORRECTA EN ROJO, NO MOSTRAR LA CORRECTA
+        element.classList.add('incorrect');
+        feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
+        feedback.className = 'feedback incorrect';
+
+        // NO MOSTRAR LA RESPUESTA CORRECTA - ELIMINADO EL BLOQUE QUE LA MARCA EN VERDE
 
         // Permitir reintentar después de 1 segundo
         setTimeout(() => {
-            if (!nextBtn.disabled) return;
+            if (!nextBtn.disabled) return; // Si ya se activó el botón siguiente (por acertar), no hacer nada
             options.forEach(opt => {
                 opt.style.pointerEvents = 'auto';
+                // Quitar solo la clase de incorrecto, mantener todo lo demás
                 opt.classList.remove('incorrect');
             });
-            feedback.textContent = '¡Intenta de nuevo!';
+            feedback.textContent = '¡Elige otra opción!';
+            feedback.classList.remove('incorrect');
         }, 1000);
     }
 
@@ -289,6 +331,3 @@ function backToSelection() {
         showScreen('englishLevels');
     }
 }
-
-// Iniciar en pantalla de idioma
-showScreen('language');
