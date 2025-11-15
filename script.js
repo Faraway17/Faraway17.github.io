@@ -169,4 +169,9 @@ function updateProgress() {
 }
 
 function showResults() {
-    show
+    showScreen(screenResults);
+    finalScore.textContent = `Tu puntuación final: ${score}/${currentQuiz.length}`;
+}
+
+// --- Pronunciación ---
+const pronunciationWord = document.getElementById("pronunciation-word");
