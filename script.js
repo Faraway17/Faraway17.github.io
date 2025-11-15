@@ -1,20 +1,11 @@
-// Base de datos de vocabulario japonés
+// Base de datos de vocabulario japonés - PALABRAS AVANZADAS
 const vocabulary = [
-    { japanese: "りんご", spanish: "manzana" },
-    { japanese: "いぬ", spanish: "perro" },
-    { japanese: "ねこ", spanish: "gato" },
-    { japanese: "みず", spanish: "agua" },
-    { japanese: "たべもの", spanish: "comida" },
-    { japanese: "ほん", spanish: "libro" },
-    { japanese: "がっこう", spanish: "escuela" },
-    { japanese: "くるま", spanish: "coche" },
-    { japanese: "て", spanish: "mano" },
-    { japanese: "あし", spanish: "pie" },
-    { japanese: "そら", spanish: "cielo" },
-    { japanese: "つき", spanish: "luna" },
-    { japanese: "はな", spanish: "flor" },
-    { japanese: "やま", spanish: "montaña" },
-    { japanese: "かわ", spanish: "río" }
+    { japanese: "伝説", spanish: "leyenda" },
+    { japanese: "嗜好", spanish: "preferencia" },
+    { japanese: "大体", spanish: "aproximadamente" },
+    { japanese: "学校", spanish: "escuela" },
+    { japanese: "感触", spanish: "sensación" },
+    { japanese: "狐", spanish: "zorro" }
 ];
 
 // Variables del juego
