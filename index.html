@@ -7,33 +7,65 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🇯🇵 Quiz de Vocabulario Japonés</h1>
-        
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        
-        <div class="score" id="score">Puntuación: 0/0</div>
-        
-        <div class="quiz-area">
-            <!-- VOCABULARIO EN GRANDE -->
-            <div class="japanese-word" id="japanese-word">読み込み中...</div>
+    <!-- PANTALLA DE SELECCIÓN DE MAZOS -->
+    <div class="deck-selection" id="deck-selection">
+        <div class="selection-container">
+            <h1>🇯🇵 Elige tu Mazo</h1>
+            <p class="subtitle">Selecciona un conjunto de palabras para practicar</p>
             
-            <!-- 4 CUADRADOS SEPARADOS -->
-            <div class="options-container" id="options-container">
-                <!-- Las opciones se cargan aquí -->
+            <div class="decks-container">
+                <div class="deck-card" data-deck="basico">
+                    <div class="deck-icon">🎯</div>
+                    <h3>Básico</h3>
+                    <p>Palabras fundamentales para empezar</p>
+                    <div class="deck-stats">6 palabras</div>
+                </div>
+                
+                <div class="deck-card" data-deck="intermedio">
+                    <div class="deck-icon">⚡</div>
+                    <h3>Intermedio</h3>
+                    <p>Vocabulario para nivel intermedio</p>
+                    <div class="deck-stats">6 palabras</div>
+                </div>
+                
+                <div class="deck-card" data-deck="avanzado">
+                    <div class="deck-icon">🔥</div>
+                    <h3>Avanzado</h3>
+                    <p>Palabras complejas y expresiones</p>
+                    <div class="deck-stats">6 palabras</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA DEL JUEGO (OCULTA INICIALMENTE) -->
+    <div class="game-container" id="game-container" style="display: none;">
+        <div class="container">
+            <h1>🇯🇵 Quiz de Vocabulario Japonés</h1>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
             </div>
             
-            <div class="feedback" id="feedback"></div>
+            <div class="score" id="score">Puntuación: 0/0</div>
             
-            <button class="next-btn" id="next-btn" disabled>Siguiente Palabra →</button>
-        </div>
-        
-        <div class="results" id="results" style="display: none;">
-            <h2>🎉 ¡Quiz Completado!</h2>
-            <p id="final-score">Tu puntuación final: 0/0</p>
-            <button class="restart-btn" id="restart-btn">Jugar Otra Vez</button>
+            <div class="quiz-area">
+                <div class="japanese-word" id="japanese-word">読み込み中...</div>
+                
+                <div class="options-container" id="options-container">
+                    <!-- Las opciones se cargan aquí -->
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <button class="next-btn" id="next-btn" disabled>Siguiente Palabra →</button>
+            </div>
+            
+            <div class="results" id="results" style="display: none;">
+                <h2>🎉 ¡Quiz Completado!</h2>
+                <p id="final-score">Tu puntuación final: 0/0</p>
+                <button class="restart-btn" id="restart-btn">Volver a Mazos</button>
+            </div>
         </div>
     </div>
 
