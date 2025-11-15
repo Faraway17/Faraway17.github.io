@@ -5,9 +5,9 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #1a1a2e;
-    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e2e8f0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -27,14 +27,14 @@ body {
 }
 
 .container {
-    background: #16213e;
+    background: #1e293b;
+    border-radius: 20px;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     text-align: center;
-    max-width: 700px;
+    max-width: 600px;
     width: 100%;
-    border: 1px solid #0f3460;
+    border: 1px solid #334155;
 }
 
 h1 {
@@ -70,17 +70,6 @@ h1 {
     margin-bottom: 15px;
 }
 
-.language-card h3 {
-    color: #fff;
-    margin-bottom: 10px;
-    font-size: 1.8em;
-}
-
-.language-card p {
-    color: #b0b0b0;
-    font-size: 1.1em;
-}
-
 /* PANTALLA MAZOS Y NIVELES */
 .decks, .levels {
     display: grid;
@@ -103,23 +92,7 @@ h1 {
     transform: translateY(-5px);
 }
 
-.deck-icon, .level-icon {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-}
-
-.deck h3, .level h3 {
-    color: #fff;
-    margin-bottom: 8px;
-    font-size: 1.3em;
-}
-
-.deck p, .level p {
-    color: #b0b0b0;
-    font-size: 0.95em;
-}
-
-/* PANTALLA JUEGO */
+/* PANTALLA JUEGO CON VOZ */
 .progress-bar {
     background: #0f3460;
     height: 8px;
@@ -138,18 +111,23 @@ h1 {
 .score {
     font-size: 1.2em;
     margin: 15px 0;
-    color: #b0b0b0;
+    color: #cbd5e1;
+    font-weight: 500;
+}
+
+.word-section {
+    margin: 30px 0;
 }
 
 .word-display {
     font-size: 3.5em;
-    margin: 30px 0;
-    color: #fff;
+    margin-bottom: 10px;
+    color: #f8fafc;
     font-weight: bold;
-    background: #0f3460;
+    background: #0f172a;
     padding: 25px;
-    border-radius: 12px;
-    border: 2px solid #1a5f7a;
+    border-radius: 15px;
+    border: 2px solid #334155;
     min-height: 120px;
     display: flex;
     align-items: center;
@@ -164,87 +142,140 @@ h1 {
     font-family: 'Arial', sans-serif;
 }
 
-.options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+.pronunciation-hint {
+    color: #94a3b8;
+    font-size: 1.1em;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* CONTROLES DE VOZ */
+.voice-controls {
     margin: 30px 0;
 }
 
-.option {
-    background: #0f3460;
-    border: 2px solid #1a5f7a;
-    padding: 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #fff;
-    font-size: 1.1em;
-    transition: all 0.3s;
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.option:hover {
-    background: #1a5f7a;
-    transform: translateY(-2px);
-}
-
-.option.correct {
-    background: #2e8b57;
-    border-color: #2e8b57;
-}
-
-.option.incorrect {
-    background: #dc143c;
-    border-color: #dc143c;
-}
-
-.feedback {
-    margin: 20px 0;
-    font-size: 1.3em;
-    min-height: 40px;
-    font-weight: bold;
-}
-
-.feedback.correct {
-    color: #2e8b57;
-}
-
-.feedback.incorrect {
-    color: #dc143c;
-}
-
-button {
+.voice-btn {
     background: #e94560;
     color: white;
     border: none;
-    padding: 15px 30px;
+    border-radius: 50px;
+    padding: 20px 40px;
+    font-size: 1.3em;
+    cursor: pointer;
+    margin: 15px 0;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.voice-btn:hover {
+    background: #d63447;
+    transform: scale(1.05);
+}
+
+.voice-btn.listening {
+    background: #f59e0b;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.voice-icon {
+    font-size: 1.5em;
+}
+
+.voice-feedback {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #334155;
+    margin-top: 20px;
+}
+
+#voice-status {
+    color: #94a3b8;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.user-speech {
+    color: #e2e8f0;
+    font-size: 1.3em;
+    font-weight: 500;
+    min-height: 30px;
+}
+
+.user-speech.correct {
+    color: #10b981;
+}
+
+.user-speech.incorrect {
+    color: #ef4444;
+}
+
+/* FEEDBACK Y BOTONES */
+.feedback {
+    margin: 20px 0;
+    font-size: 1.4em;
+    min-height: 50px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.feedback.correct {
+    color: #10b981;
+    background: #064e3b;
+    border: 2px solid #065f46;
+}
+
+.feedback.incorrect {
+    color: #ef4444;
+    background: #7f1d1d;
+    border: 2px solid #991b1b;
+}
+
+.game-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.next-btn, .skip-btn, .back-btn {
+    background: #475569;
+    color: #f1f5f9;
+    border: 1px solid #64748b;
     border-radius: 8px;
+    padding: 15px 25px;
     font-size: 1.1em;
     cursor: pointer;
-    margin: 10px 0;
-    transition: background 0.3s;
+    flex: 1;
+    transition: all 0.3s;
 }
 
-button:hover {
-    background: #d63447;
+.next-btn:hover, .skip-btn:hover, .back-btn:hover {
+    background: #64748b;
 }
 
-button:disabled {
-    background: #666;
+.next-btn:disabled {
+    background: #374151;
     cursor: not-allowed;
 }
 
-.back-btn {
-    background: #1a5f7a;
-    margin-top: 30px;
+.skip-btn {
+    background: #f59e0b;
 }
 
-.back-btn:hover {
-    background: #0f3460;
+.skip-btn:hover {
+    background: #d97706;
 }
 
 /* PANTALLA RESULTADOS */
@@ -259,7 +290,7 @@ button:disabled {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .container {
         padding: 25px 20px;
         margin: 10px;
@@ -267,11 +298,6 @@ button:disabled {
     
     .language-options {
         grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .language-card {
-        padding: 30px 20px;
     }
     
     .decks, .levels {
@@ -281,14 +307,14 @@ button:disabled {
     .word-display {
         font-size: 2.8em;
         padding: 20px;
-        min-height: 100px;
     }
     
-    .options {
-        grid-template-columns: 1fr;
+    .voice-btn {
+        padding: 15px 30px;
+        font-size: 1.1em;
     }
     
-    h1 {
-        font-size: 1.8em;
+    .game-buttons {
+        flex-direction: column;
     }
 }
