@@ -1,103 +1,39 @@
-// Base de datos expandida
+// Base de datos para reconocimiento de voz
 const japaneseDecks = {
     basico: [
-        { word: "学校", translation: "escuela" },
-        { word: "本", translation: "libro" },
-        { word: "水", translation: "agua" },
-        { word: "猫", translation: "gato" },
-        { word: "犬", translation: "perro" },
-        { word: "手", translation: "mano" }
+        { word: "学校", translation: "gakkou", pronunciation: "gak-koh" },
+        { word: "本", translation: "hon", pronunciation: "hohn" },
+        { word: "水", translation: "mizu", pronunciation: "mee-zoo" },
+        { word: "猫", translation: "neko", pronunciation: "neh-koh" },
+        { word: "犬", translation: "inu", pronunciation: "ee-noo" },
+        { word: "手", translation: "te", pronunciation: "teh" }
     ],
     intermedio: [
-        { word: "伝説", translation: "leyenda" },
-        { word: "嗜好", translation: "preferencia" },
-        { word: "大体", translation: "aproximadamente" },
-        { word: "感触", translation: "sensación" },
-        { word: "狐", translation: "zorro" },
-        { word: "空", translation: "cielo" }
-    ],
-    avanzado: [
-        { word: "微妙", translation: "delicado" },
-        { word: "矛盾", translation: "contradicción" },
-        { word: "絆", translation: "vínculo" },
-        { word: "無駄", translation: "inútil" },
-        { word: "微妙", translation: "sutil" },
-        { word: "觉悟", translation: "determinación" }
-    ],
-    kanji: [
-        { word: "愛", translation: "amor" },
-        { word: "夢", translation: "sueño" },
-        { word: "力", translation: "poder" },
-        { word: "美", translation: "belleza" },
-        { word: "心", translation: "corazón" },
-        { word: "道", translation: "camino" }
-    ],
-    verbos: [
-        { word: "食べる", translation: "comer" },
-        { word: "飲む", translation: "beber" },
-        { word: "行く", translation: "ir" },
-        { word: "来る", translation: "venir" },
-        { word: "見る", translation: "ver" },
-        { word: "話す", translation: "hablar" }
-    ],
-    avanzado2: [
-        { word: "絢爛", translation: "brillante" },
-        { word: "邂逅", translation: "encuentro" },
-        { word: "刹那", translation: "momento" },
-        { word: "悠久", translation: "eternidad" },
-        { word: "混沌", translation: "caos" },
-        { word: "輪廻", translation: "reencarnación" }
+        { word: "伝説", translation: "densetsu", pronunciation: "den-seh-tsoo" },
+        { word: "嗜好", translation: "shikou", pronunciation: "shee-koh" },
+        { word: "大体", translation: "daitai", pronunciation: "dai-tai" },
+        { word: "感触", translation: "kanshoku", pronunciation: "kan-shoh-koo" },
+        { word: "狐", translation: "kitsune", pronunciation: "kit-soo-neh" },
+        { word: "空", translation: "sora", pronunciation: "soh-rah" }
     ]
 };
 
 const englishLevels = {
     a1: [
-        { word: "Hello", translation: "Hola" },
-        { word: "Goodbye", translation: "Adiós" },
-        { word: "Thank you", translation: "Gracias" },
-        { word: "Please", translation: "Por favor" },
-        { word: "Yes", translation: "Sí" },
-        { word: "No", translation: "No" }
+        { word: "Hello", translation: "hello", pronunciation: "heh-loh" },
+        { word: "Goodbye", translation: "goodbye", pronunciation: "good-bye" },
+        { word: "Thank you", translation: "thank you", pronunciation: "thank yoo" },
+        { word: "Please", translation: "please", pronunciation: "pleez" },
+        { word: "Yes", translation: "yes", pronunciation: "yes" },
+        { word: "No", translation: "no", pronunciation: "noh" }
     ],
     a2: [
-        { word: "House", translation: "Casa" },
-        { word: "Family", translation: "Familia" },
-        { word: "Food", translation: "Comida" },
-        { word: "Water", translation: "Agua" },
-        { word: "Friend", translation: "Amigo" },
-        { word: "School", translation: "Escuela" }
-    ],
-    b1: [
-        { word: "Actually", translation: "En realidad" },
-        { word: "Although", translation: "Aunque" },
-        { word: "Because", translation: "Porque" },
-        { word: "However", translation: "Sin embargo" },
-        { word: "Therefore", translation: "Por lo tanto" },
-        { word: "Meanwhile", translation: "Mientras tanto" }
-    ],
-    b2: [
-        { word: "Accomplish", translation: "Lograr" },
-        { word: "Significant", translation: "Significativo" },
-        { word: "Furthermore", translation: "Además" },
-        { word: "Nevertheless", translation: "No obstante" },
-        { word: "Consequently", translation: "En consecuencia" },
-        { word: "Ultimately", translation: "Finalmente" }
-    ],
-    c1: [
-        { word: "Ambiguous", translation: "Ambiguo" },
-        { word: "Comprehensive", translation: "Exhaustivo" },
-        { word: "Substantial", translation: "Sustancial" },
-        { word: "Nevertheless", translation: "Sin embargo" },
-        { word: "Consequently", translation: "En consecuencia" },
-        { word: "Furthermore", translation: "Además" }
-    ],
-    c2: [
-        { word: "Ubiquitous", translation: "Ubicuo" },
-        { word: "Meticulous", translation: "Meticuloso" },
-        { word: "Pragmatic", translation: "Pragmático" },
-        { word: "Inevitable", translation: "Inevitable" },
-        { word: "Paradigm", translation: "Paradigma" },
-        { word: "Quintessential", translation: "Quintaesencia" }
+        { word: "House", translation: "house", pronunciation: "howss" },
+        { word: "Family", translation: "family", pronunciation: "fam-uh-lee" },
+        { word: "Food", translation: "food", pronunciation: "food" },
+        { word: "Water", translation: "water", pronunciation: "wah-ter" },
+        { word: "Friend", translation: "friend", pronunciation: "frend" },
+        { word: "School", translation: "school", pronunciation: "skool" }
     ]
 };
 
@@ -107,7 +43,9 @@ let usedWords = [];
 let score = 0;
 let totalQuestions = 0;
 let currentCorrectAnswer = "";
-let currentType = ""; // 'japanese' o 'english'
+let currentType = "";
+let answeredCorrectly = false;
+let recognition = null;
 
 // Elementos del DOM
 const screens = {
@@ -118,7 +56,7 @@ const screens = {
     results: document.getElementById('screen-results')
 };
 
-// Inicializar eventos cuando la página cargue
+// Inicializar eventos
 document.addEventListener('DOMContentLoaded', function() {
     // Botones de idioma
     document.getElementById('japanese-btn').addEventListener('click', function() {
@@ -138,13 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
         showScreen('language');
     });
 
-    // Botón siguiente pregunta
+    // Botones del juego
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
-
-    // Botón volver a selección desde resultados
+    document.getElementById('skip-btn').addEventListener('click', skipQuestion);
     document.getElementById('back-to-selection').addEventListener('click', backToSelection);
 
-    // Eventos para mazos japoneses
+    // Botón de reconocimiento de voz
+    document.getElementById('start-listening').addEventListener('click', startVoiceRecognition);
+
+    // Eventos para mazos y niveles
     document.querySelectorAll('#screen-japanese-decks .deck').forEach(deck => {
         deck.addEventListener('click', function() {
             const deckName = this.getAttribute('data-deck');
@@ -152,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Eventos para niveles inglés
     document.querySelectorAll('#screen-english-levels .level').forEach(level => {
         level.addEventListener('click', function() {
             const levelName = this.getAttribute('data-level');
@@ -160,170 +99,218 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Mostrar pantalla inicial
+    // Inicializar reconocimiento de voz si está disponible
+    initializeSpeechRecognition();
+    
     showScreen('language');
 });
 
-// Cambiar pantalla
-function showScreen(screenName) {
-    // Ocultar todas las pantallas
-    Object.values(screens).forEach(screen => {
-        screen.classList.remove('active');
-    });
+// Inicializar reconocimiento de voz
+function initializeSpeechRecognition() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US'; // Por defecto inglés
+        
+        recognition.onstart = function() {
+            document.getElementById('voice-status').textContent = 'Escuchando... Habla ahora';
+            document.getElementById('start-listening').classList.add('listening');
+        };
+        
+        recognition.onresult = function(event) {
+            const speechResult = event.results[0][0].transcript.toLowerCase().trim();
+            document.getElementById('user-speech').textContent = `"${speechResult}"`;
+            checkSpeechAnswer(speechResult);
+        };
+        
+        recognition.onerror = function(event) {
+            document.getElementById('voice-status').textContent = 'Error: ' + event.error;
+            document.getElementById('start-listening').classList.remove('listening');
+        };
+        
+        recognition.onend = function() {
+            document.getElementById('start-listening').classList.remove('listening');
+            document.getElementById('voice-status').textContent = 'Presiona para hablar de nuevo';
+        };
+    } else {
+        document.getElementById('voice-status').textContent = 'Reconocimiento de voz no soportado en este navegador';
+        document.getElementById('start-listening').disabled = true;
+    }
+}
+
+// Cambiar idioma de reconocimiento
+function setRecognitionLanguage(language) {
+    if (recognition) {
+        recognition.lang = language === 'japanese' ? 'ja-JP' : 'en-US';
+    }
+}
+
+// Iniciar reconocimiento de voz
+function startVoiceRecognition() {
+    if (recognition && !answeredCorrectly) {
+        document.getElementById('user-speech').textContent = '';
+        document.getElementById('user-speech').className = 'user-speech';
+        recognition.start();
+    }
+}
+
+// Verificar respuesta de voz
+function checkSpeechAnswer(speech) {
+    const userSpeechElement = document.getElementById('user-speech');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
     
-    // Mostrar la pantalla solicitada
+    // Limpiar y normalizar ambas cadenas para comparación
+    const userAnswer = speech.toLowerCase().replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
+    const correctAnswer = currentCorrectAnswer.toLowerCase().replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
+    
+    console.log('Usuario dijo:', userAnswer);
+    console.log('Respuesta correcta:', correctAnswer);
+    
+    // Comparación flexible (permite pequeños errores)
+    const isCorrect = userAnswer.includes(correctAnswer) || 
+                     correctAnswer.includes(userAnswer) ||
+                     calculateSimilarity(userAnswer, correctAnswer) > 0.7;
+    
+    if (isCorrect) {
+        // Respuesta correcta
+        answeredCorrectly = true;
+        score++;
+        userSpeechElement.classList.add('correct');
+        feedback.textContent = '¡Perfecto! 🎉 Pronunciación correcta';
+        feedback.className = 'feedback correct';
+        nextBtn.disabled = false;
+    } else {
+        // Respuesta incorrecta
+        userSpeechElement.classList.add('incorrect');
+        feedback.textContent = `Intenta de nuevo. Deberías decir: "${currentCorrectAnswer}"`;
+        feedback.className = 'feedback incorrect';
+    }
+    
+    document.getElementById('score').textContent = `Puntuación: ${score}/${totalQuestions}`;
+}
+
+// Calcular similitud entre cadenas (para comparación flexible)
+function calculateSimilarity(str1, str2) {
+    const longer = str1.length > str2.length ? str1 : str2;
+    const shorter = str1.length > str2.length ? str2 : str1;
+    
+    if (longer.length === 0) return 1.0;
+    
+    return (longer.length - editDistance(longer, shorter)) / parseFloat(longer.length);
+}
+
+// Distancia de edición (Levenshtein)
+function editDistance(s1, s2) {
+    s1 = s1.toLowerCase();
+    s2 = s2.toLowerCase();
+    
+    const costs = [];
+    for (let i = 0; i <= s1.length; i++) {
+        let lastValue = i;
+        for (let j = 0; j <= s2.length; j++) {
+            if (i === 0) costs[j] = j;
+            else {
+                if (j > 0) {
+                    let newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) !== s2.charAt(j - 1))
+                        newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
+            }
+        }
+        if (i > 0) costs[s2.length] = lastValue;
+    }
+    return costs[s2.length];
+}
+
+// Funciones de navegación y juego (las mismas que antes, pero adaptadas)
+function showScreen(screenName) {
+    Object.values(screens).forEach(screen => screen.classList.remove('active'));
     screens[screenName].classList.add('active');
 }
 
-// Seleccionar mazo japonés
 function selectDeck(deckName, type) {
     currentDeck = japaneseDecks[deckName];
     currentType = type;
+    setRecognitionLanguage(type);
     startGame();
 }
 
-// Seleccionar nivel inglés
 function selectLevel(levelName, type) {
     currentDeck = englishLevels[levelName];
     currentType = type;
+    setRecognitionLanguage(type);
     startGame();
 }
 
-// Iniciar juego
 function startGame() {
     usedWords = [];
     score = 0;
     totalQuestions = 0;
+    answeredCorrectly = false;
     
-    // Actualizar título según idioma
     const gameTitle = document.getElementById('game-title');
-    gameTitle.textContent = currentType === 'japanese' ? '🎌 Quiz Japonés' : '🇬🇧 Quiz Inglés';
+    gameTitle.textContent = currentType === 'japanese' ? '🎌 Quiz de Voz Japonés' : '🇬🇧 Quiz de Voz Inglés';
     
     showScreen('game');
     nextQuestion();
 }
 
-// Siguiente pregunta
 function nextQuestion() {
-    const wordDisplay = document.getElementById('word-display');
-    const options = document.getElementById('options');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-    const scoreElement = document.getElementById('score');
-    const progress = document.getElementById('progress');
-
-    // Resetear
-    feedback.textContent = '';
-    feedback.className = 'feedback';
-    nextBtn.disabled = true;
-    wordDisplay.className = 'word-display ' + currentType;
-
-    // Verificar si terminó
+    resetQuestionState();
+    
     if (usedWords.length >= currentDeck.length) {
         showResults();
         return;
     }
-
-    // Obtener palabra aleatoria
+    
     let randomWord;
     do {
         randomWord = currentDeck[Math.floor(Math.random() * currentDeck.length)];
     } while (usedWords.includes(randomWord.word));
-
+    
     usedWords.push(randomWord.word);
     currentCorrectAnswer = randomWord.translation;
-
-    // Mostrar palabra
-    wordDisplay.textContent = randomWord.word;
-
-    // Generar opciones
-    const allOptions = [randomWord.translation];
-    while (allOptions.length < 4) {
-        const randomOption = currentDeck[Math.floor(Math.random() * currentDeck.length)].translation;
-        if (!allOptions.includes(randomOption)) {
-            allOptions.push(randomOption);
-        }
-    }
-
-    // Mezclar opciones
-    allOptions.sort(() => Math.random() - 0.5);
-
-    // Crear botones de opciones
-    options.innerHTML = '';
-    allOptions.forEach(option => {
-        const button = document.createElement('div');
-        button.className = 'option';
-        button.textContent = option;
-        button.addEventListener('click', function() {
-            checkAnswer(option, button);
-        });
-        options.appendChild(button);
-    });
-
-    // Actualizar UI
+    
+    // Mostrar palabra y ayuda de pronunciación
+    document.getElementById('word-display').textContent = randomWord.word;
+    document.getElementById('word-display').className = 'word-display ' + currentType;
+    document.getElementById('pronunciation-hint').textContent = `Pronunciación: ${randomWord.pronunciation}`;
+    
     totalQuestions++;
-    scoreElement.textContent = `Puntuación: ${score}/${totalQuestions}`;
-    progress.style.width = `${(usedWords.length / currentDeck.length) * 100}%`;
-}
-
-// Verificar respuesta - MODIFICADO: No mostrar respuesta correcta al equivocarse
-function checkAnswer(selected, element) {
-    const options = document.querySelectorAll('.option');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-
-    // Deshabilitar todas las opciones temporalmente
-    options.forEach(opt => {
-        opt.style.pointerEvents = 'none';
-    });
-
-    if (selected === currentCorrectAnswer) {
-        // Respuesta correcta - MOSTRAR LA CORRECTA EN VERDE
-        element.classList.add('correct');
-        feedback.textContent = '¡Correcto! 🎉';
-        feedback.className = 'feedback correct';
-        score++;
-        nextBtn.disabled = false;
-        
-        // Mostrar todas las respuestas correctas (solo cuando aciertas)
-        options.forEach(opt => {
-            if (opt.textContent === currentCorrectAnswer) {
-                opt.classList.add('correct');
-            }
-        });
-        
-    } else {
-        // Respuesta incorrecta - SOLO MARCAR LA INCORRECTA EN ROJO, NO MOSTRAR LA CORRECTA
-        element.classList.add('incorrect');
-        feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
-        feedback.className = 'feedback incorrect';
-
-        // NO MOSTRAR LA RESPUESTA CORRECTA - ELIMINADO EL BLOQUE QUE LA MARCA EN VERDE
-
-        // Permitir reintentar después de 1 segundo
-        setTimeout(() => {
-            if (!nextBtn.disabled) return; // Si ya se activó el botón siguiente (por acertar), no hacer nada
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'auto';
-                // Quitar solo la clase de incorrecto, mantener todo lo demás
-                opt.classList.remove('incorrect');
-            });
-            feedback.textContent = '¡Elige otra opción!';
-            feedback.classList.remove('incorrect');
-        }, 1000);
-    }
-
     document.getElementById('score').textContent = `Puntuación: ${score}/${totalQuestions}`;
+    document.getElementById('progress').style.width = `${(usedWords.length / currentDeck.length) * 100}%`;
 }
 
-// Mostrar resultados
+function resetQuestionState() {
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('next-btn').disabled = true;
+    document.getElementById('user-speech').textContent = '';
+    document.getElementById('user-speech').className = 'user-speech';
+    document.getElementById('voice-status').textContent = 'Presiona el botón y habla';
+    answeredCorrectly = false;
+}
+
+function skipQuestion() {
+    if (!answeredCorrectly) {
+        document.getElementById('feedback').textContent = `La respuesta era: "${currentCorrectAnswer}"`;
+        document.getElementById('feedback').className = 'feedback incorrect';
+        document.getElementById('next-btn').disabled = false;
+    }
+}
+
 function showResults() {
     const finalScore = document.getElementById('final-score');
     finalScore.textContent = `Puntuación final: ${score}/${currentDeck.length}`;
     showScreen('results');
 }
 
-// Volver a selección
 function backToSelection() {
     if (currentType === 'japanese') {
         showScreen('japaneseDecks');
