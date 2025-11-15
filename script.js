@@ -142,7 +142,7 @@ function checkAnswer(selectedOption, optionElement) {
         
     } else {
         // Respuesta incorrecta - SOLO MARCAR LA INCORRECTA EN ROJO TEMPORAL
-        optionElement.classList.add('temporary-incorrect');
+        optionElement.classList.add('incorrect');
         feedbackElement.textContent = 'Incorrecto ❌ - ¡Intenta de nuevo!';
         feedbackElement.classList.add('incorrect');
         
@@ -151,8 +151,8 @@ function checkAnswer(selectedOption, optionElement) {
             if (!answeredCorrectly) {
                 allOptions.forEach(opt => {
                     opt.style.pointerEvents = 'auto';
-                    // Quitar la clase temporal de incorrecto
-                    opt.classList.remove('temporary-incorrect');
+                    // Quitar la clase de incorrecto
+                    opt.classList.remove('incorrect');
                 });
                 feedbackElement.textContent = '¡Elige otra opción!';
                 feedbackElement.classList.remove('incorrect');
