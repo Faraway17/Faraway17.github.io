@@ -12,12 +12,12 @@
         <div class="container">
             <h1>🌍 Elige Idioma</h1>
             <div class="language-options">
-                <div class="language-card" onclick="selectLanguage('japanese')">
+                <div class="language-card" id="japanese-btn">
                     <div class="language-icon">🎌</div>
                     <h3>Japonés</h3>
                     <p>6 mazos de vocabulario</p>
                 </div>
-                <div class="language-card" onclick="selectLanguage('english')">
+                <div class="language-card" id="english-btn">
                     <div class="language-icon">🇬🇧</div>
                     <h3>Inglés</h3>
                     <p>6 niveles de proficiency</p>
@@ -31,38 +31,38 @@
         <div class="container">
             <h1>🎌 Mazos Japoneses</h1>
             <div class="decks">
-                <div class="deck" onclick="selectDeck('basico')">
+                <div class="deck" data-deck="basico">
                     <div class="deck-icon">🎯</div>
                     <h3>Básico</h3>
                     <p>Palabras fundamentales N5</p>
                 </div>
-                <div class="deck" onclick="selectDeck('intermedio')">
+                <div class="deck" data-deck="intermedio">
                     <div class="deck-icon">⚡</div>
                     <h3>Intermedio</h3>
                     <p>Vocabulario N4-N3</p>
                 </div>
-                <div class="deck" onclick="selectDeck('avanzado')">
+                <div class="deck" data-deck="avanzado">
                     <div class="deck-icon">🔥</div>
                     <h3>Avanzado</h3>
                     <p>Palabras complejas N3-N2</p>
                 </div>
-                <div class="deck" onclick="selectDeck('kanji')">
+                <div class="deck" data-deck="kanji">
                     <div class="deck-icon">🖋️</div>
                     <h3>Kanji</h3>
                     <p>Caracteres esenciales</p>
                 </div>
-                <div class="deck" onclick="selectDeck('verbos')">
+                <div class="deck" data-deck="verbos">
                     <div class="deck-icon">🔤</div>
                     <h3>Verbos</h3>
                     <p>Acciones y conjugaciones</p>
                 </div>
-                <div class="deck" onclick="selectDeck('avanzado2')">
+                <div class="deck" data-deck="avanzado2">
                     <div class="deck-icon">🎯</div>
                     <h3>Expert</h3>
                     <p>Nivel nativo N2-N1</p>
                 </div>
             </div>
-            <button class="back-btn" onclick="backToLanguage()">← Volver</button>
+            <button class="back-btn" id="back-from-japanese">← Volver</button>
         </div>
     </div>
 
@@ -71,38 +71,38 @@
         <div class="container">
             <h1>🇬🇧 Niveles de Inglés</h1>
             <div class="levels">
-                <div class="level" onclick="selectLevel('a1')">
+                <div class="level" data-level="a1">
                     <div class="level-icon">🟢</div>
                     <h3>A1 - Beginner</h3>
                     <p>Vocabulario básico</p>
                 </div>
-                <div class="level" onclick="selectLevel('a2')">
+                <div class="level" data-level="a2">
                     <div class="level-icon">🟡</div>
                     <h3>A2 - Elementary</h3>
                     <p>Frases simples</p>
                 </div>
-                <div class="level" onclick="selectLevel('b1')">
+                <div class="level" data-level="b1">
                     <div class="level-icon">🟠</div>
                     <h3>B1 - Intermediate</h3>
                     <p>Conversaciones cotidianas</p>
                 </div>
-                <div class="level" onclick="selectLevel('b2')">
+                <div class="level" data-level="b2">
                     <div class="level-icon">🔵</div>
                     <h3>B2 - Upper Intermediate</h3>
                     <p>Debates y discusiones</p>
                 </div>
-                <div class="level" onclick="selectLevel('c1')">
+                <div class="level" data-level="c1">
                     <div class="level-icon">🟣</div>
                     <h3>C1 - Advanced</h3>
                     <p>Lenguaje académico</p>
                 </div>
-                <div class="level" onclick="selectLevel('c2')">
+                <div class="level" data-level="c2">
                     <div class="level-icon">🔴</div>
                     <h3>C2 - Proficient</h3>
                     <p>Nivel nativo</p>
                 </div>
             </div>
-            <button class="back-btn" onclick="backToLanguage()">← Volver</button>
+            <button class="back-btn" id="back-from-english">← Volver</button>
         </div>
     </div>
 
@@ -117,7 +117,7 @@
             <div id="word-display" class="word-display">準備中</div>
             <div id="options" class="options"></div>
             <div id="feedback" class="feedback"></div>
-            <button id="next-btn" onclick="nextQuestion()" disabled>Siguiente →</button>
+            <button id="next-btn">Siguiente →</button>
         </div>
     </div>
 
@@ -126,7 +126,7 @@
         <div class="container">
             <h1>🎉 ¡Completado!</h1>
             <div id="final-score" class="final-score"></div>
-            <button onclick="backToSelection()">Volver a Selección</button>
+            <button id="back-to-selection">Volver a Selección</button>
         </div>
     </div>
 
