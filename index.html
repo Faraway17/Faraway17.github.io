@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Quiz</title>
+    <title>Language Quiz - Voz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,12 +15,12 @@
                 <div class="language-card" id="japanese-btn">
                     <div class="language-icon">🎌</div>
                     <h3>Japonés</h3>
-                    <p>6 mazos de vocabulario</p>
+                    <p>Pronuncia palabras japonesas</p>
                 </div>
                 <div class="language-card" id="english-btn">
                     <div class="language-icon">🇬🇧</div>
                     <h3>Inglés</h3>
-                    <p>6 niveles de proficiency</p>
+                    <p>Pronuncia palabras en inglés</p>
                 </div>
             </div>
         </div>
@@ -45,21 +45,6 @@
                     <div class="deck-icon">🔥</div>
                     <h3>Avanzado</h3>
                     <p>Palabras complejas N3-N2</p>
-                </div>
-                <div class="deck" data-deck="kanji">
-                    <div class="deck-icon">🖋️</div>
-                    <h3>Kanji</h3>
-                    <p>Caracteres esenciales</p>
-                </div>
-                <div class="deck" data-deck="verbos">
-                    <div class="deck-icon">🔤</div>
-                    <h3>Verbos</h3>
-                    <p>Acciones y conjugaciones</p>
-                </div>
-                <div class="deck" data-deck="avanzado2">
-                    <div class="deck-icon">🎯</div>
-                    <h3>Expert</h3>
-                    <p>Nivel nativo N2-N1</p>
                 </div>
             </div>
             <button class="back-btn" id="back-from-japanese">← Volver</button>
@@ -86,38 +71,42 @@
                     <h3>B1 - Intermediate</h3>
                     <p>Conversaciones cotidianas</p>
                 </div>
-                <div class="level" data-level="b2">
-                    <div class="level-icon">🔵</div>
-                    <h3>B2 - Upper Intermediate</h3>
-                    <p>Debates y discusiones</p>
-                </div>
-                <div class="level" data-level="c1">
-                    <div class="level-icon">🟣</div>
-                    <h3>C1 - Advanced</h3>
-                    <p>Lenguaje académico</p>
-                </div>
-                <div class="level" data-level="c2">
-                    <div class="level-icon">🔴</div>
-                    <h3>C2 - Proficient</h3>
-                    <p>Nivel nativo</p>
-                </div>
             </div>
             <button class="back-btn" id="back-from-english">← Volver</button>
         </div>
     </div>
 
-    <!-- PANTALLA JUEGO -->
+    <!-- PANTALLA JUEGO CON VOZ -->
     <div id="screen-game" class="screen">
         <div class="container">
-            <h1 id="game-title">🎌 Quiz</h1>
+            <h1 id="game-title">🎌 Quiz de Voz</h1>
             <div class="progress-bar">
                 <div id="progress" class="progress"></div>
             </div>
             <div id="score" class="score">Puntuación: 0/0</div>
-            <div id="word-display" class="word-display">準備中</div>
-            <div id="options" class="options"></div>
+            
+            <div class="word-section">
+                <div id="word-display" class="word-display">準備中</div>
+                <div class="pronunciation-hint" id="pronunciation-hint"></div>
+            </div>
+
+            <div class="voice-controls">
+                <button id="start-listening" class="voice-btn">
+                    <span class="voice-icon">🎤</span>
+                    Hablar Ahora
+                </button>
+                <div id="voice-feedback" class="voice-feedback">
+                    <div id="voice-status">Presiona el botón y habla</div>
+                    <div id="user-speech" class="user-speech"></div>
+                </div>
+            </div>
+
             <div id="feedback" class="feedback"></div>
-            <button id="next-btn">Siguiente →</button>
+            
+            <div class="game-buttons">
+                <button id="skip-btn" class="skip-btn">Saltar Palabra</button>
+                <button id="next-btn" class="next-btn" disabled>Siguiente →</button>
+            </div>
         </div>
     </div>
 
