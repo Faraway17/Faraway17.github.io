@@ -24,12 +24,8 @@ document.getElementById("back-from-pronunciation").addEventListener("click", () 
 document.getElementById("back-to-selection").addEventListener("click", () => showScreen(screenLanguage));
 
 // --- Navegación inicial ---
-japaneseBtn.addEventListener("click", () => {
-    showScreen(screenJapaneseDecks);
-});
-englishBtn.addEventListener("click", () => {
-    showScreen(screenEnglishLevels);
-});
+japaneseBtn.addEventListener("click", () => showScreen(screenJapaneseDecks));
+englishBtn.addEventListener("click", () => showScreen(screenEnglishLevels));
 pronunciationBtn.addEventListener("click", () => {
     showScreen(screenPronunciation);
     loadPronunciationWord();
@@ -46,15 +42,45 @@ const finalScore = document.getElementById("final-score");
 
 let currentQuestion = 0;
 let score = 0;
+let currentQuiz = [];
 
-// Ejemplo de preguntas (puedes ampliar)
-const quizData = [
-    { word: "こんにちは", options: ["Hola", "Adiós", "Gracias", "Agua"], correct: 0 },
-    { word: "ありがとう", options: ["Perdón", "Gracias", "Casa", "Comer"], correct: 1 },
-    { word: "水", options: ["Fuego", "Agua", "Tierra", "Aire"], correct: 1 }
-];
+// --- Datos de preguntas por idioma/nivel ---
+const quizSets = {
+    japanese: [
+        { word: "こんにちは", options: ["Hola", "Adiós", "Gracias", "Agua"], correct: 0 },
+        { word: "ありがとう", options: ["Perdón", "Gracias", "Casa", "Comer"], correct: 1 },
+        { word: "水", options: ["Fuego", "Agua", "Tierra", "Aire"], correct: 1 }
+    ],
+    english_a1: [
+        { word: "Dog", options: ["Perro", "Gato", "Casa", "Agua"], correct: 0 },
+        { word: "House", options: ["Casa", "Carro", "Libro", "Mesa"], correct: 0 },
+        { word: "Book", options: ["Mesa", "Libro", "Puerta", "Zapato"], correct: 1 }
+    ],
+    english_a2: [
+        { word: "I am happy", options: ["Estoy feliz", "Estoy cansado", "Estoy triste", "Estoy ocupado"], correct: 0 },
+        { word: "She is tall", options: ["Ella es baja", "Ella es alta", "Ella es joven", "Ella es vieja"], correct: 1 }
+    ],
+    english_b1: [
+        { word: "Travel", options: ["Viajar", "Comer", "Dormir", "Correr"], correct: 0 },
+        { word: "Conversation", options: ["Conversación", "Canción", "Habitación", "Celebración"], correct: 0 }
+    ],
+    english_b2: [
+        { word: "Opinion", options: ["Opinión", "Opción", "Operación", "Oposición"], correct: 0 },
+        { word: "Debate", options: ["Debate", "Discusión", "Juego", "Trabajo"], correct: 0 }
+    ],
+    english_c1: [
+        { word: "Thesis", options: ["Tesis", "Trabajo", "Libro", "Ensayo"], correct: 0 },
+        { word: "Research", options: ["Investigación", "Recreación", "Revisión", "Reacción"], correct: 0 }
+    ],
+    english_c2: [
+        { word: "Proficient", options: ["Competente", "Incompetente", "Principiante", "Avanzado"], correct: 0 },
+        { word: "Native", options: ["Nativo", "Extranjero", "Turista", "Profesor"], correct: 0 }
+    ]
+};
 
-function startQuiz() {
+// --- Iniciar quiz ---
+function startQuiz(setKey) {
+    currentQuiz = quizSets[setKey];
     currentQuestion = 0;
     score = 0;
     showScreen(screenGame);
@@ -62,7 +88,7 @@ function startQuiz() {
 }
 
 function loadQuestion() {
-    const q = quizData[currentQuestion];
+    const q = currentQuiz[currentQuestion];
     wordDisplay.textContent = q.word;
     optionsContainer.innerHTML = "";
     feedback.textContent = "";
@@ -78,7 +104,7 @@ function loadQuestion() {
 }
 
 function checkAnswer(selected) {
-    const q = quizData[currentQuestion];
+    const q = currentQuiz[currentQuestion];
     const optionButtons = document.querySelectorAll(".option");
     optionButtons.forEach((btn, i) => {
         btn.classList.remove("correct", "incorrect");
@@ -98,7 +124,7 @@ function checkAnswer(selected) {
 
 nextBtn.addEventListener("click", () => {
     currentQuestion++;
-    if (currentQuestion < quizData.length) {
+    if (currentQuestion < currentQuiz.length) {
         loadQuestion();
     } else {
         showResults();
@@ -106,17 +132,17 @@ nextBtn.addEventListener("click", () => {
 });
 
 function updateScore() {
-    scoreDisplay.textContent = `Puntuación: ${score}/${quizData.length}`;
+    scoreDisplay.textContent = `Puntuación: ${score}/${currentQuiz.length}`;
 }
 
 function updateProgress() {
-    const progressPercent = ((currentQuestion + 1) / quizData.length) * 100;
+    const progressPercent = ((currentQuestion + 1) / currentQuiz.length) * 100;
     progressBar.style.width = progressPercent + "%";
 }
 
 function showResults() {
     showScreen(screenResults);
-    finalScore.textContent = `Tu puntuación final: ${score}/${quizData.length}`;
+    finalScore.textContent = `Tu puntuación final: ${score}/${currentQuiz.length}`;
 }
 
 // --- Pronunciación ---
@@ -163,9 +189,16 @@ nextPronunciationBtn.addEventListener("click", () => {
     loadPronunciationWord();
 });
 
-// --- Iniciar quiz desde mazos/niveles ---
-document.querySelectorAll(".deck, .level").forEach(el => {
+// --- Conexión de mazos y niveles ---
+document.querySelectorAll(".deck").forEach(el => {
     el.addEventListener("click", () => {
-        startQuiz();
+        startQuiz("japanese");
+    });
+});
+
+document.querySelectorAll(".level").forEach(el => {
+    el.addEventListener("click", () => {
+        const level = el.dataset.level; // a1, a2, b1, b2, c1, c2
+        startQuiz("english_" + level);
     });
 });
