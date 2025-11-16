@@ -256,6 +256,14 @@ const screens = {
 
 // Inicializar eventos cuando la página cargue
 document.addEventListener('DOMContentLoaded', function() {
+    // Botón de inicio
+    document.getElementById('home-btn').addEventListener('click', function() {
+        showScreen('language');
+        // Resetear cualquier juego en progreso
+        currentDeck = [];
+        pronunciationDeck = [];
+    });
+
     // Botones de idioma
     document.getElementById('japanese-btn').addEventListener('click', function() {
         showScreen('japaneseDecks');
