@@ -345,4 +345,241 @@ function updateListeningUI() {
         status.textContent = 'Habla ahora...';
     } else {
         button.classList.remove('listening');
-        button.innerHTML = '<span class="microphone
+        button.innerHTML = '<span class="microphone-icon">🎤</span><span>Haz clic y di la palabra</span>';
+        status.textContent = '';
+    }
+}
+
+// Cambiar pantalla
+function showScreen(screenName) {
+    // Ocultar todas las pantallas
+    Object.values(screens).forEach(screen => {
+        screen.classList.remove('active');
+    });
+    
+    // Mostrar la pantalla solicitada
+    screens[screenName].classList.add('active');
+}
+
+// Seleccionar mazo japonés
+function selectDeck(deckName, type) {
+    currentDeck = japaneseDecks[deckName];
+    currentType = type;
+    startGame();
+}
+
+// Seleccionar nivel inglés
+function selectLevel(levelName, type) {
+    currentDeck = englishLevels[levelName];
+    currentType = type;
+    startGame();
+}
+
+// Seleccionar nivel de pronunciación
+function selectPronunciationLevel(levelName) {
+    pronunciationDeck = pronunciationDecks[levelName];
+    startPronunciationGame();
+}
+
+// Iniciar juego
+function startGame() {
+    usedWords = [];
+    score = 0;
+    totalQuestions = 0;
+    
+    // Actualizar título según idioma
+    const gameTitle = document.getElementById('game-title');
+    gameTitle.textContent = currentType === 'japanese' ? '🎌 Quiz Japonés' : '🇬🇧 Quiz Inglés';
+    
+    showScreen('game');
+    nextQuestion();
+}
+
+// Iniciar juego de pronunciación
+function startPronunciationGame() {
+    pronunciationUsedWords = [];
+    pronunciationScore = 0;
+    pronunciationTotalQuestions = 0;
+    
+    showScreen('pronunciationGame');
+    nextPronunciationQuestion();
+}
+
+// Siguiente pregunta
+function nextQuestion() {
+    const wordDisplay = document.getElementById('word-display');
+    const options = document.getElementById('options');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const scoreElement = document.getElementById('score');
+    const progress = document.getElementById('progress');
+
+    // Resetear
+    feedback.textContent = '';
+    feedback.className = 'feedback';
+    nextBtn.disabled = true;
+    wordDisplay.className = 'word-display ' + currentType;
+
+    // Verificar si terminó
+    if (usedWords.length >= currentDeck.length) {
+        showResults();
+        return;
+    }
+
+    // Obtener palabra aleatoria
+    let randomWord;
+    do {
+        randomWord = currentDeck[Math.floor(Math.random() * currentDeck.length)];
+    } while (usedWords.includes(randomWord.word));
+
+    usedWords.push(randomWord.word);
+    currentCorrectAnswer = randomWord.translation;
+
+    // Mostrar palabra
+    wordDisplay.textContent = randomWord.word;
+
+    // Generar opciones
+    const allOptions = [randomWord.translation];
+    while (allOptions.length < 4) {
+        const randomOption = currentDeck[Math.floor(Math.random() * currentDeck.length)].translation;
+        if (!allOptions.includes(randomOption)) {
+            allOptions.push(randomOption);
+        }
+    }
+
+    // Mezclar opciones
+    allOptions.sort(() => Math.random() - 0.5);
+
+    // Crear botones de opciones
+    options.innerHTML = '';
+    allOptions.forEach(option => {
+        const button = document.createElement('div');
+        button.className = 'option';
+        button.textContent = option;
+        button.addEventListener('click', function() {
+            checkAnswer(option, button);
+        });
+        options.appendChild(button);
+    });
+
+    // Actualizar UI
+    totalQuestions++;
+    scoreElement.textContent = `Puntuación: ${score}/${totalQuestions}`;
+    progress.style.width = `${(usedWords.length / currentDeck.length) * 100}%`;
+}
+
+// Siguiente pregunta de pronunciación
+function nextPronunciationQuestion() {
+    const targetWord = document.getElementById('target-word');
+    const translation = document.getElementById('translation');
+    const nextBtn = document.getElementById('pronunciation-next');
+    const scoreElement = document.getElementById('pronunciation-score');
+    const progress = document.getElementById('pronunciation-progress');
+    const userTranscription = document.getElementById('user-transcription');
+    const feedback = document.getElementById('pronunciation-feedback');
+
+    // Resetear
+    nextBtn.disabled = true;
+    userTranscription.textContent = '';
+    feedback.textContent = '';
+    feedback.className = 'pronunciation-feedback';
+
+    // Verificar si terminó
+    if (pronunciationUsedWords.length >= pronunciationDeck.length) {
+        showPronunciationResults();
+        return;
+    }
+
+    // Obtener palabra aleatoria
+    let randomWord;
+    do {
+        randomWord = pronunciationDeck[Math.floor(Math.random() * pronunciationDeck.length)];
+    } while (pronunciationUsedWords.includes(randomWord.word));
+
+    pronunciationUsedWords.push(randomWord.word);
+    currentPronunciationWord = randomWord.word;
+
+    // Mostrar palabra y traducción
+    targetWord.textContent = randomWord.word;
+    translation.textContent = randomWord.translation;
+
+    // Actualizar UI
+    pronunciationTotalQuestions++;
+    scoreElement.textContent = `Puntuación: ${pronunciationScore}/${pronunciationTotalQuestions}`;
+    progress.style.width = `${(pronunciationUsedWords.length / pronunciationDeck.length) * 100}%`;
+}
+
+// Verificar respuesta - MODIFICADO: No mostrar respuesta correcta al equivocarse
+function checkAnswer(selected, element) {
+    const options = document.querySelectorAll('.option');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+
+    // Deshabilitar todas las opciones temporalmente
+    options.forEach(opt => {
+        opt.style.pointerEvents = 'none';
+    });
+
+    if (selected === currentCorrectAnswer) {
+        // Respuesta correcta - MOSTRAR LA CORRECTA EN VERDE
+        element.classList.add('correct');
+        feedback.textContent = '¡Correcto! 🎉';
+        feedback.className = 'feedback correct';
+        score++;
+        nextBtn.disabled = false;
+        
+        // Mostrar todas las respuestas correctas (solo cuando aciertas)
+        options.forEach(opt => {
+            if (opt.textContent === currentCorrectAnswer) {
+                opt.classList.add('correct');
+            }
+        });
+        
+    } else {
+        // Respuesta incorrecta - SOLO MARCAR LA INCORRECTA EN ROJO, NO MOSTRAR LA CORRECTA
+        element.classList.add('incorrect');
+        feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
+        feedback.className = 'feedback incorrect';
+
+        // NO MOSTRAR LA RESPUESTA CORRECTA - ELIMINADO EL BLOQUE QUE LA MARCA EN VERDE
+
+        // Permitir reintentar después de 1 segundo
+        setTimeout(() => {
+            if (!nextBtn.disabled) return; // Si ya se activó el botón siguiente (por acertar), no hacer nada
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'auto';
+                // Quitar solo la clase de incorrecto, mantener todo lo demás
+                opt.classList.remove('incorrect');
+            });
+            feedback.textContent = '¡Elige otra opción!';
+            feedback.classList.remove('incorrect');
+        }, 1000);
+    }
+
+    document.getElementById('score').textContent = `Puntuación: ${score}/${totalQuestions}`;
+}
+
+// Mostrar resultados
+function showResults() {
+    const finalScore = document.getElementById('final-score');
+    finalScore.textContent = `Puntuación final: ${score}/${currentDeck.length}`;
+    showScreen('results');
+}
+
+// Mostrar resultados de pronunciación
+function showPronunciationResults() {
+    const finalScore = document.getElementById('final-score');
+    finalScore.textContent = `Puntuación final: ${pronunciationScore}/${pronunciationDeck.length}`;
+    showScreen('results');
+}
+
+// Volver a selección
+function backToSelection() {
+    if (currentType === 'japanese') {
+        showScreen('japaneseDecks');
+    } else if (currentType === 'english') {
+        showScreen('englishLevels');
+    } else {
+        showScreen('englishPronunciation');
+    }
+}
