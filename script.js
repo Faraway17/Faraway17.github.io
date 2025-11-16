@@ -101,20 +101,72 @@ const englishLevels = {
     ]
 };
 
+// Base de datos para pronunciación
+const pronunciationDecks = {
+    basic: [
+        { word: "Hello", translation: "Hola" },
+        { word: "Goodbye", translation: "Adiós" },
+        { word: "Thank you", translation: "Gracias" },
+        { word: "Please", translation: "Por favor" },
+        { word: "Yes", translation: "Sí" },
+        { word: "No", translation: "No" },
+        { word: "Cat", translation: "Gato" },
+        { word: "Dog", translation: "Perro" },
+        { word: "House", translation: "Casa" },
+        { word: "Water", translation: "Agua" }
+    ],
+    intermediate: [
+        { word: "Beautiful", translation: "Hermoso" },
+        { word: "Important", translation: "Importante" },
+        { word: "Different", translation: "Diferente" },
+        { word: "Excellent", translation: "Excelente" },
+        { word: "Wonderful", translation: "Maravilloso" },
+        { word: "Fantastic", translation: "Fantástico" },
+        { word: "Computer", translation: "Computadora" },
+        { word: "Telephone", translation: "Teléfono" },
+        { word: "Restaurant", translation: "Restaurante" },
+        { word: "University", translation: "Universidad" }
+    ],
+    advanced: [
+        { word: "Pronunciation", translation: "Pronunciación" },
+        { word: "Communication", translation: "Comunicación" },
+        { word: "Opportunity", translation: "Oportunidad" },
+        { word: "Responsibility", translation: "Responsabilidad" },
+        { word: "International", translation: "Internacional" },
+        { word: "Comprehensive", translation: "Comprensivo" },
+        { word: "Development", translation: "Desarrollo" },
+        { word: "Environment", translation: "Medio ambiente" },
+        { word: "Government", translation: "Gobierno" },
+        { word: "Technology", translation: "Tecnología" }
+    ]
+};
+
 // Variables del juego
 let currentDeck = [];
 let usedWords = [];
 let score = 0;
 let totalQuestions = 0;
 let currentCorrectAnswer = "";
-let currentType = ""; // 'japanese' o 'english'
+let currentType = "";
+
+// Variables para pronunciación
+let pronunciationDeck = [];
+let pronunciationUsedWords = [];
+let pronunciationScore = 0;
+let pronunciationTotalQuestions = 0;
+let currentPronunciationWord = "";
+let recognition = null;
+let isListening = false;
 
 // Elementos del DOM
 const screens = {
     language: document.getElementById('screen-language'),
     japaneseDecks: document.getElementById('screen-japanese-decks'),
     englishLevels: document.getElementById('screen-english-levels'),
+    pronunciation: document.getElementById('screen-pronunciation'),
+    englishPronunciation: document.getElementById('screen-english-pronunciation'),
     game: document.getElementById('screen-game'),
+    pronunciationGame: document.getElementById('screen-pronunciation-game'),
     results: document.getElementById('screen-results')
 };
 
@@ -129,6 +181,10 @@ document.addEventListener('DOMContentLoaded', function() {
         showScreen('englishLevels');
     });
 
+    document.getElementById('pronunciation-btn').addEventListener('click', function() {
+        showScreen('pronunciation');
+    });
+
     // Botones de volver
     document.getElementById('back-from-japanese').addEventListener('click', function() {
         showScreen('language');
@@ -138,8 +194,30 @@ document.addEventListener('DOMContentLoaded', function() {
         showScreen('language');
     });
 
+    document.getElementById('back-from-pronunciation').addEventListener('click', function() {
+        showScreen('language');
+    });
+
+    document.getElementById('back-from-english-pronunciation').addEventListener('click', function() {
+        showScreen('pronunciation');
+    });
+
+    document.getElementById('back-from-pronunciation-game').addEventListener('click', function() {
+        showScreen('englishPronunciation');
+    });
+
     // Botón siguiente pregunta
     document.getElementById('next-btn').addEventListener('click', nextQuestion);
+
+    // Botones pronunciación
+    document.getElementById('english-pronunciation-btn').addEventListener('click', function() {
+        showScreen('englishPronunciation');
+    });
+
+    document.getElementById('pronunciation-next').addEventListener('click', nextPronunciationQuestion);
+
+    // Botón de micrófono
+    document.getElementById('start-listening').addEventListener('click', toggleListening);
 
     // Botón volver a selección desde resultados
     document.getElementById('back-to-selection').addEventListener('click', backToSelection);
@@ -160,174 +238,111 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Eventos para niveles de pronunciación
+    document.querySelectorAll('#screen-english-pronunciation .pronunciation-level').forEach(level => {
+        level.addEventListener('click', function() {
+            const levelName = this.getAttribute('data-level');
+            selectPronunciationLevel(levelName);
+        });
+    });
+
+    // Inicializar reconocimiento de voz
+    initializeSpeechRecognition();
+
     // Mostrar pantalla inicial
     showScreen('language');
 });
 
-// Cambiar pantalla
-function showScreen(screenName) {
-    // Ocultar todas las pantallas
-    Object.values(screens).forEach(screen => {
-        screen.classList.remove('active');
-    });
-    
-    // Mostrar la pantalla solicitada
-    screens[screenName].classList.add('active');
-}
-
-// Seleccionar mazo japonés
-function selectDeck(deckName, type) {
-    currentDeck = japaneseDecks[deckName];
-    currentType = type;
-    startGame();
-}
-
-// Seleccionar nivel inglés
-function selectLevel(levelName, type) {
-    currentDeck = englishLevels[levelName];
-    currentType = type;
-    startGame();
-}
-
-// Iniciar juego
-function startGame() {
-    usedWords = [];
-    score = 0;
-    totalQuestions = 0;
-    
-    // Actualizar título según idioma
-    const gameTitle = document.getElementById('game-title');
-    gameTitle.textContent = currentType === 'japanese' ? '🎌 Quiz Japonés' : '🇬🇧 Quiz Inglés';
-    
-    showScreen('game');
-    nextQuestion();
-}
-
-// Siguiente pregunta
-function nextQuestion() {
-    const wordDisplay = document.getElementById('word-display');
-    const options = document.getElementById('options');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-    const scoreElement = document.getElementById('score');
-    const progress = document.getElementById('progress');
-
-    // Resetear
-    feedback.textContent = '';
-    feedback.className = 'feedback';
-    nextBtn.disabled = true;
-    wordDisplay.className = 'word-display ' + currentType;
-
-    // Verificar si terminó
-    if (usedWords.length >= currentDeck.length) {
-        showResults();
-        return;
+// Inicializar reconocimiento de voz
+function initializeSpeechRecognition() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            isListening = true;
+            updateListeningUI();
+        };
+        
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript.toLowerCase().trim();
+            handleSpeechResult(transcript);
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Error en reconocimiento de voz:', event.error);
+            isListening = false;
+            updateListeningUI();
+            document.getElementById('listening-status').textContent = 'Error: ' + event.error;
+        };
+        
+        recognition.onend = function() {
+            isListening = false;
+            updateListeningUI();
+        };
+    } else {
+        console.warn('El reconocimiento de voz no es compatible con este navegador');
+        document.getElementById('start-listening').disabled = true;
+        document.getElementById('start-listening').innerHTML = '<span>Navegador no compatible</span>';
     }
+}
 
-    // Obtener palabra aleatoria
-    let randomWord;
-    do {
-        randomWord = currentDeck[Math.floor(Math.random() * currentDeck.length)];
-    } while (usedWords.includes(randomWord.word));
+// Manejar resultado del reconocimiento de voz
+function handleSpeechResult(transcript) {
+    const userTranscription = document.getElementById('user-transcription');
+    const feedback = document.getElementById('pronunciation-feedback');
+    
+    userTranscription.textContent = `Dijiste: "${transcript}"`;
+    
+    // Comparar con la palabra objetivo (case insensitive)
+    if (transcript.toLowerCase() === currentPronunciationWord.toLowerCase()) {
+        pronunciationScore++;
+        feedback.textContent = '¡Correcto! 🎉';
+        feedback.className = 'pronunciation-feedback correct';
+        document.getElementById('pronunciation-next').disabled = false;
+    } else {
+        feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
+        feedback.className = 'pronunciation-feedback incorrect';
+        // Permitir reintentar
+        setTimeout(() => {
+            if (!document.getElementById('pronunciation-next').disabled) return;
+            feedback.textContent = '¡Intenta de nuevo!';
+            feedback.classList.remove('incorrect');
+            userTranscription.textContent = '';
+        }, 2000);
+    }
+    
+    document.getElementById('pronunciation-score').textContent = `Puntuación: ${pronunciationScore}/${pronunciationTotalQuestions}`;
+}
 
-    usedWords.push(randomWord.word);
-    currentCorrectAnswer = randomWord.translation;
-
-    // Mostrar palabra
-    wordDisplay.textContent = randomWord.word;
-
-    // Generar opciones
-    const allOptions = [randomWord.translation];
-    while (allOptions.length < 4) {
-        const randomOption = currentDeck[Math.floor(Math.random() * currentDeck.length)].translation;
-        if (!allOptions.includes(randomOption)) {
-            allOptions.push(randomOption);
+// Alternar escucha
+function toggleListening() {
+    if (!recognition) return;
+    
+    if (isListening) {
+        recognition.stop();
+    } else {
+        try {
+            recognition.start();
+        } catch (error) {
+            console.error('Error al iniciar reconocimiento:', error);
         }
     }
-
-    // Mezclar opciones
-    allOptions.sort(() => Math.random() - 0.5);
-
-    // Crear botones de opciones
-    options.innerHTML = '';
-    allOptions.forEach(option => {
-        const button = document.createElement('div');
-        button.className = 'option';
-        button.textContent = option;
-        button.addEventListener('click', function() {
-            checkAnswer(option, button);
-        });
-        options.appendChild(button);
-    });
-
-    // Actualizar UI
-    totalQuestions++;
-    scoreElement.textContent = `Puntuación: ${score}/${totalQuestions}`;
-    progress.style.width = `${(usedWords.length / currentDeck.length) * 100}%`;
 }
 
-// Verificar respuesta - MODIFICADO: No mostrar respuesta correcta al equivocarse
-function checkAnswer(selected, element) {
-    const options = document.querySelectorAll('.option');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-
-    // Deshabilitar todas las opciones temporalmente
-    options.forEach(opt => {
-        opt.style.pointerEvents = 'none';
-    });
-
-    if (selected === currentCorrectAnswer) {
-        // Respuesta correcta - MOSTRAR LA CORRECTA EN VERDE
-        element.classList.add('correct');
-        feedback.textContent = '¡Correcto! 🎉';
-        feedback.className = 'feedback correct';
-        score++;
-        nextBtn.disabled = false;
-        
-        // Mostrar todas las respuestas correctas (solo cuando aciertas)
-        options.forEach(opt => {
-            if (opt.textContent === currentCorrectAnswer) {
-                opt.classList.add('correct');
-            }
-        });
-        
+// Actualizar UI de escucha
+function updateListeningUI() {
+    const button = document.getElementById('start-listening');
+    const status = document.getElementById('listening-status');
+    
+    if (isListening) {
+        button.classList.add('listening');
+        button.innerHTML = '<span class="microphone-icon">🔴</span><span>Escuchando...</span>';
+        status.textContent = 'Habla ahora...';
     } else {
-        // Respuesta incorrecta - SOLO MARCAR LA INCORRECTA EN ROJO, NO MOSTRAR LA CORRECTA
-        element.classList.add('incorrect');
-        feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
-        feedback.className = 'feedback incorrect';
-
-        // NO MOSTRAR LA RESPUESTA CORRECTA - ELIMINADO EL BLOQUE QUE LA MARCA EN VERDE
-
-        // Permitir reintentar después de 1 segundo
-        setTimeout(() => {
-            if (!nextBtn.disabled) return; // Si ya se activó el botón siguiente (por acertar), no hacer nada
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'auto';
-                // Quitar solo la clase de incorrecto, mantener todo lo demás
-                opt.classList.remove('incorrect');
-            });
-            feedback.textContent = '¡Elige otra opción!';
-            feedback.classList.remove('incorrect');
-        }, 1000);
-    }
-
-    document.getElementById('score').textContent = `Puntuación: ${score}/${totalQuestions}`;
-}
-
-// Mostrar resultados
-function showResults() {
-    const finalScore = document.getElementById('final-score');
-    finalScore.textContent = `Puntuación final: ${score}/${currentDeck.length}`;
-    showScreen('results');
-}
-
-// Volver a selección
-function backToSelection() {
-    if (currentType === 'japanese') {
-        showScreen('japaneseDecks');
-    } else {
-        showScreen('englishLevels');
-    }
-}
+        button.classList.remove('listening');
+        button.innerHTML = '<span class="microphone
