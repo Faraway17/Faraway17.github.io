@@ -1,52 +1,136 @@
-// Base de datos expandida
+// Base de datos de japonés por niveles JLPT
 const japaneseDecks = {
-    basico: [
+    n5: [
+        { word: "私", translation: "yo" },
+        { word: "あなた", translation: "tú" },
+        { word: "人", translation: "persona" },
+        { word: "男", translation: "hombre" },
+        { word: "女", translation: "mujer" },
+        { word: "子", translation: "niño" },
+        { word: "先生", translation: "profesor" },
+        { word: "学生", translation: "estudiante" },
+        { word: "会社", translation: "empresa" },
+        { word: "社員", translation: "empleado" },
         { word: "学校", translation: "escuela" },
-        { word: "本", translation: "libro" },
-        { word: "水", translation: "agua" },
-        { word: "猫", translation: "gato" },
-        { word: "犬", translation: "perro" },
-        { word: "手", translation: "mano" }
+        { word: "大学", translation: "universidad" },
+        { word: "病院", translation: "hospital" },
+        { word: "店", translation: "tienda" },
+        { word: " restaurant", translation: "restaurante" },
+        { word: "駅", translation: "estación" },
+        { word: "空港", translation: "aeropuerto" },
+        { word: "日本", translation: "Japón" },
+        { word: "日本語", translation: "idioma japonés" },
+        { word: "英語", translation: "inglés" }
     ],
-    intermedio: [
-        { word: "伝説", translation: "leyenda" },
-        { word: "嗜好", translation: "preferencia" },
-        { word: "大体", translation: "aproximadamente" },
-        { word: "感触", translation: "sensación" },
-        { word: "狐", translation: "zorro" },
-        { word: "空", translation: "cielo" }
+    n4: [
+        { word: "運動", translation: "ejercicio" },
+        { word: "試合", translation: "partido" },
+        { word: "選手", translation: "atleta" },
+        { word: "勝つ", translation: "ganar" },
+        { word: "負ける", translation: "perder" },
+        { word: "練習", translation: "práctica" },
+        { word: "準備", translation: "preparación" },
+        { word: "調査", translation: "investigación" },
+        { word: "研究", translation: "estudio/investigación" },
+        { word: "開発", translation: "desarrollo" },
+        { word: "製造", translation: "manufactura" },
+        { word: "生産", translation: "producción" },
+        { word: "技術", translation: "técnica" },
+        { word: "科学", translation: "ciencia" },
+        { word: "医学", translation: "medicina" },
+        { word: "法律", translation: "ley" },
+        { word: "政治", translation: "política" },
+        { word: "経済", translation: "economía" },
+        { word: "社会", translation: "sociedad" },
+        { word: "文化", translation: "cultura" }
     ],
-    avanzado: [
-        { word: "微妙", translation: "delicado" },
-        { word: "矛盾", translation: "contradicción" },
-        { word: "絆", translation: "vínculo" },
-        { word: "無駄", translation: "inútil" },
+    n3: [
+        { word: "確認", translation: "confirmación" },
+        { word: "承認", translation: "aprobación" },
+        { word: "許可", translation: "permiso" },
+        { word: "禁止", translation: "prohibición" },
+        { word: "要求", translation: "demanda" },
+        { word: "提案", translation: "propuesta" },
+        { word: "説明", translation: "explicación" },
+        { word: "報告", translation: "reporte" },
+        { word: "連絡", translation: "contacto" },
+        { word: "相談", translation: "consulta" },
+        { word: "議論", translation: "debate" },
+        { word: "協力", translation: "cooperación" },
+        { word: "競争", translation: "competencia" },
+        { word: "成長", translation: "crecimiento" },
+        { word: "発展", translation: "desarrollo" },
+        { word: "変化", translation: "cambio" },
+        { word: "改善", translation: "mejora" },
+        { word: "解決", translation: "solución" },
+        { word: "成功", translation: "éxito" },
+        { word: "失敗", translation: "fracaso" }
+    ],
+    n2: [
+        { word: "実施", translation: "implementación" },
+        { word: "実行", translation: "ejecución" },
+        { word: "運用", translation: "operación" },
+        { word: "管理", translation: "gestión" },
+        { word: "統制", translation: "control" },
+        { word: "調整", translation: "ajuste" },
+        { word: "対応", translation: "respuesta" },
+        { word: "処置", translation: "tratamiento" },
+        { word: "処分", translation: "disposición" },
+        { word: "処罰", translation: "castigo" },
+        { word: "救済", translation: "alivio" },
+        { word: "補償", translation: "compensación" },
+        { word: "保障", translation: "garantía" },
+        { word: "保険", translation: "seguro" },
+        { word: "契約", translation: "contrato" },
+        { word: "取引", translation: "transacción" },
+        { word: "商談", translation: "negociación comercial" },
+        { word: "交渉", translation: "negociación" },
+        { word: "協議", translation: "consulta" },
+        { word: "会談", translation: "entrevista" }
+    ],
+    n1: [
+        { word: "顕著", translation: "notable" },
+        { word: "著明", translation: "distinguido" },
+        { word: "卓越", translation: "excelencia" },
+        { word: "秀逸", translation: "sobresaliente" },
+        { word: "非凡", translation: "extraordinario" },
+        { word: "特異", translation: "peculiar" },
+        { word: "異例", translation: "inusual" },
+        { word: "空前", translation: "sin precedentes" },
+        { word: "画期", translation: "revolucionario" },
+        { word: "革新的", translation: "innovador" },
+        { word: "先駆的", translation: "pionero" },
+        { word: "先進的", translation: "avanzado" },
+        { word: "先端的", translation: "de vanguardia" },
+        { word: "精緻", translation: "elaborado" },
+        { word: "緻密", translation: "detallado" },
+        { word: "精巧", translation: "intrincado" },
+        { word: "繊細", translation: "delicado" },
         { word: "微妙", translation: "sutil" },
-        { word: "觉悟", translation: "determinación" }
+        { word: "微妙", translation: "delicado" },
+        { word: "不可欠", translation: "indispensable" }
     ],
     kanji: [
         { word: "愛", translation: "amor" },
         { word: "夢", translation: "sueño" },
-        { word: "力", translation: "poder" },
-        { word: "美", translation: "belleza" },
-        { word: "心", translation: "corazón" },
-        { word: "道", translation: "camino" }
-    ],
-    verbos: [
-        { word: "食べる", translation: "comer" },
-        { word: "飲む", translation: "beber" },
-        { word: "行く", translation: "ir" },
-        { word: "来る", translation: "venir" },
-        { word: "見る", translation: "ver" },
-        { word: "話す", translation: "hablar" }
-    ],
-    avanzado2: [
-        { word: "絢爛", translation: "brillante" },
-        { word: "邂逅", translation: "encuentro" },
-        { word: "刹那", translation: "momento" },
-        { word: "悠久", translation: "eternidad" },
-        { word: "混沌", translation: "caos" },
-        { word: "輪廻", translation: "reencarnación" }
+        { word: "希望", translation: "esperanza" },
+        { word: "勇気", translation: "coraje" },
+        { word: "幸せ", translation: "felicidad" },
+        { word: "平和", translation: "paz" },
+        { word: "自由", translation: "libertad" },
+        { word: "正義", translation: "justicia" },
+        { word: "真理", translation: "verdad" },
+        { word: "知識", translation: "conocimiento" },
+        { word: "智慧", translation: "sabiduría" },
+        { word: "経験", translation: "experiencia" },
+        { word: "記憶", translation: "memoria" },
+        { word: "意識", translation: "conciencia" },
+        { word: "感情", translation: "emoción" },
+        { word: "感覚", translation: "sensación" },
+        { word: "直感", translation: "intuición" },
+        { word: "運命", translation: "destino" },
+        { word: "偶然", translation: "coincidencia" },
+        { word: "必然", translation: "necesidad" }
     ]
 };
 
@@ -299,7 +383,7 @@ function initializeSpeechRecognition() {
     }
 }
 
-// Manejar resultado del reconocimiento de voz - FUNCIÓN CORREGIDA
+// Manejar resultado del reconocimiento de voz
 function handleSpeechResult(transcript) {
     const userTranscription = document.getElementById('user-transcription');
     const feedback = document.getElementById('pronunciation-feedback');
@@ -629,7 +713,7 @@ function showPronunciationResults() {
     showScreen('results');
 }
 
-// Volver a selección - FUNCIÓN CORREGIDA
+// Volver a selección
 function backToSelection() {
     // Determinar de dónde venimos basado en qué decks están activos
     if (pronunciationDeck.length > 0) {
