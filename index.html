@@ -22,6 +22,11 @@
                     <h3>Inglés</h3>
                     <p>6 niveles de proficiency</p>
                 </div>
+                <div class="language-card" id="pronunciation-btn">
+                    <div class="language-icon">🎤</div>
+                    <h3>Pronunciación</h3>
+                    <p>Practica tu speaking</p>
+                </div>
             </div>
         </div>
     </div>
@@ -106,6 +111,46 @@
         </div>
     </div>
 
+    <!-- PANTALLA PRONUNCIACIÓN -->
+    <div id="screen-pronunciation" class="screen">
+        <div class="container">
+            <h1>🎤 Práctica de Pronunciación</h1>
+            <div class="pronunciation-options">
+                <div class="pronunciation-card" id="english-pronunciation-btn">
+                    <div class="pronunciation-icon">🇬🇧</div>
+                    <h3>Inglés</h3>
+                    <p>Practica pronunciación en inglés</p>
+                </div>
+            </div>
+            <button class="back-btn" id="back-from-pronunciation">← Volver</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA PRONUNCIACIÓN INGLÉS -->
+    <div id="screen-english-pronunciation" class="screen">
+        <div class="container">
+            <h1>🎤 Pronunciación Inglés</h1>
+            <div class="pronunciation-levels">
+                <div class="pronunciation-level" data-level="basic">
+                    <div class="level-icon">🟢</div>
+                    <h3>Básico</h3>
+                    <p>Palabras simples</p>
+                </div>
+                <div class="pronunciation-level" data-level="intermediate">
+                    <div class="level-icon">🟡</div>
+                    <h3>Intermedio</h3>
+                    <p>Palabras comunes</p>
+                </div>
+                <div class="pronunciation-level" data-level="advanced">
+                    <div class="level-icon">🔴</div>
+                    <h3>Avanzado</h3>
+                    <p>Palabras complejas</p>
+                </div>
+            </div>
+            <button class="back-btn" id="back-from-english-pronunciation">← Volver</button>
+        </div>
+    </div>
+
     <!-- PANTALLA JUEGO -->
     <div id="screen-game" class="screen">
         <div class="container">
@@ -118,6 +163,36 @@
             <div id="options" class="options"></div>
             <div id="feedback" class="feedback"></div>
             <button id="next-btn">Siguiente →</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA PRONUNCIACIÓN JUEGO -->
+    <div id="screen-pronunciation-game" class="screen">
+        <div class="container">
+            <h1 id="pronunciation-title">🎤 Pronunciación</h1>
+            <div class="progress-bar">
+                <div id="pronunciation-progress" class="progress"></div>
+            </div>
+            <div id="pronunciation-score" class="score">Puntuación: 0/0</div>
+            
+            <div class="pronunciation-game-area">
+                <div id="target-word" class="target-word">Word</div>
+                <div id="translation" class="translation">Palabra en español</div>
+                
+                <div class="pronunciation-controls">
+                    <button id="start-listening" class="microphone-btn">
+                        <span class="microphone-icon">🎤</span>
+                        <span>Haz clic y di la palabra</span>
+                    </button>
+                    <div id="listening-status" class="listening-status"></div>
+                </div>
+                
+                <div id="user-transcription" class="user-transcription"></div>
+                <div id="pronunciation-feedback" class="pronunciation-feedback"></div>
+            </div>
+            
+            <button id="pronunciation-next" class="next-btn">Siguiente →</button>
+            <button class="back-btn" id="back-from-pronunciation-game">← Volver</button>
         </div>
     </div>
 
