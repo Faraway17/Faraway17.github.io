@@ -203,7 +203,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('back-from-pronunciation-game').addEventListener('click', function() {
-        showScreen('englishPronunciation');
+        if (pronunciationDeck.length > 0) {
+            showScreen('englishPronunciation');
+        } else {
+            showScreen('pronunciation');
+        }
     });
 
     // Botón siguiente pregunta
@@ -358,7 +362,12 @@ function showScreen(screenName) {
     });
     
     // Mostrar la pantalla solicitada
-    screens[screenName].classList.add('active');
+    if (screens[screenName]) {
+        screens[screenName].classList.add('active');
+    } else {
+        console.error('Pantalla no encontrada:', screenName);
+        screens.language.classList.add('active');
+    }
 }
 
 // Seleccionar mazo japonés
@@ -573,13 +582,18 @@ function showPronunciationResults() {
     showScreen('results');
 }
 
-// Volver a selección
+// Volver a selección - FUNCIÓN CORREGIDA
 function backToSelection() {
-    if (currentType === 'japanese') {
+    // Determinar de dónde venimos basado en qué decks están activos
+    if (pronunciationDeck.length > 0) {
+        // Venimos de pronunciación
+        showScreen('englishPronunciation');
+    } else if (currentType === 'japanese') {
         showScreen('japaneseDecks');
     } else if (currentType === 'english') {
         showScreen('englishLevels');
     } else {
-        showScreen('englishPronunciation');
+        // Por defecto, volver al inicio
+        showScreen('language');
     }
 }
