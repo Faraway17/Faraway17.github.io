@@ -270,10 +270,13 @@ function initializeSpeechRecognition() {
         recognition.onstart = function() {
             isListening = true;
             updateListeningUI();
+            console.log('Comenzando a escuchar...');
         };
         
         recognition.onresult = function(event) {
             const transcript = event.results[0][0].transcript.toLowerCase().trim();
+            console.log('Palabra detectada:', transcript);
+            console.log('Palabra objetivo:', currentPronunciationWord.toLowerCase());
             handleSpeechResult(transcript);
         };
         
@@ -287,6 +290,7 @@ function initializeSpeechRecognition() {
         recognition.onend = function() {
             isListening = false;
             updateListeningUI();
+            console.log('Dejó de escuchar');
         };
     } else {
         console.warn('El reconocimiento de voz no es compatible con este navegador');
@@ -295,45 +299,77 @@ function initializeSpeechRecognition() {
     }
 }
 
-// Manejar resultado del reconocimiento de voz
+// Manejar resultado del reconocimiento de voz - FUNCIÓN CORREGIDA
 function handleSpeechResult(transcript) {
     const userTranscription = document.getElementById('user-transcription');
     const feedback = document.getElementById('pronunciation-feedback');
+    const nextBtn = document.getElementById('pronunciation-next');
     
     userTranscription.textContent = `Dijiste: "${transcript}"`;
+    userTranscription.style.display = 'block';
     
-    // Comparar con la palabra objetivo (case insensitive)
-    if (transcript.toLowerCase() === currentPronunciationWord.toLowerCase()) {
+    console.log('Comparando:', transcript, 'con', currentPronunciationWord.toLowerCase());
+    
+    // Comparar con la palabra objetivo (case insensitive y más flexible)
+    const normalizedTranscript = transcript.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+    const normalizedTarget = currentPronunciationWord.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+    
+    console.log('Normalizado - Dijiste:', normalizedTranscript, 'Objetivo:', normalizedTarget);
+    
+    if (normalizedTranscript === normalizedTarget) {
         pronunciationScore++;
-        feedback.textContent = '¡Correcto! 🎉';
+        feedback.textContent = '¡Correcto! 🎉 Pronunciación perfecta';
         feedback.className = 'pronunciation-feedback correct';
-        document.getElementById('pronunciation-next').disabled = false;
+        feedback.style.display = 'block';
+        nextBtn.disabled = false;
+        console.log('¡Respuesta correcta!');
     } else {
-        feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
+        feedback.textContent = `Incorrecto ❌ Dijiste "${transcript}" pero es "${currentPronunciationWord}"`;
         feedback.className = 'pronunciation-feedback incorrect';
-        // Permitir reintentar
+        feedback.style.display = 'block';
+        console.log('Respuesta incorrecta');
+        
+        // Permitir reintentar después de 2 segundos
         setTimeout(() => {
-            if (!document.getElementById('pronunciation-next').disabled) return;
+            if (!nextBtn.disabled) return; // Si ya se activó el botón siguiente, no hacer nada
             feedback.textContent = '¡Intenta de nuevo!';
             feedback.classList.remove('incorrect');
             userTranscription.textContent = '';
-        }, 2000);
+            userTranscription.style.display = 'none';
+        }, 3000);
     }
     
+    // Actualizar puntuación inmediatamente
+    pronunciationTotalQuestions = Math.max(pronunciationTotalQuestions, pronunciationUsedWords.length);
     document.getElementById('pronunciation-score').textContent = `Puntuación: ${pronunciationScore}/${pronunciationTotalQuestions}`;
+    
+    console.log('Puntuación actual:', pronunciationScore, '/', pronunciationTotalQuestions);
 }
 
 // Alternar escucha
 function toggleListening() {
-    if (!recognition) return;
+    if (!recognition) {
+        console.error('Reconocimiento de voz no disponible');
+        return;
+    }
     
     if (isListening) {
         recognition.stop();
+        console.log('Deteniendo reconocimiento...');
     } else {
         try {
+            // Resetear UI antes de empezar
+            document.getElementById('user-transcription').textContent = '';
+            document.getElementById('user-transcription').style.display = 'none';
+            document.getElementById('pronunciation-feedback').textContent = '';
+            document.getElementById('pronunciation-feedback').style.display = 'none';
+            document.getElementById('listening-status').textContent = 'Escuchando...';
+            
             recognition.start();
+            console.log('Iniciando reconocimiento...');
         } catch (error) {
             console.error('Error al iniciar reconocimiento:', error);
+            document.getElementById('listening-status').textContent = 'Error al iniciar micrófono';
         }
     }
 }
@@ -347,10 +383,12 @@ function updateListeningUI() {
         button.classList.add('listening');
         button.innerHTML = '<span class="microphone-icon">🔴</span><span>Escuchando...</span>';
         status.textContent = 'Habla ahora...';
+        status.style.color = '#e94560';
     } else {
         button.classList.remove('listening');
         button.innerHTML = '<span class="microphone-icon">🎤</span><span>Haz clic y di la palabra</span>';
-        status.textContent = '';
+        status.textContent = 'Presiona el botón para hablar';
+        status.style.color = '#b0b0b0';
     }
 }
 
@@ -409,6 +447,13 @@ function startPronunciationGame() {
     pronunciationUsedWords = [];
     pronunciationScore = 0;
     pronunciationTotalQuestions = 0;
+    
+    // Resetear UI
+    document.getElementById('user-transcription').textContent = '';
+    document.getElementById('user-transcription').style.display = 'none';
+    document.getElementById('pronunciation-feedback').textContent = '';
+    document.getElementById('pronunciation-feedback').style.display = 'none';
+    document.getElementById('pronunciation-next').disabled = true;
     
     showScreen('pronunciationGame');
     nextPronunciationQuestion();
@@ -490,7 +535,9 @@ function nextPronunciationQuestion() {
     // Resetear
     nextBtn.disabled = true;
     userTranscription.textContent = '';
+    userTranscription.style.display = 'none';
     feedback.textContent = '';
+    feedback.style.display = 'none';
     feedback.className = 'pronunciation-feedback';
 
     // Verificar si terminó
@@ -513,9 +560,11 @@ function nextPronunciationQuestion() {
     translation.textContent = randomWord.translation;
 
     // Actualizar UI
-    pronunciationTotalQuestions++;
+    pronunciationTotalQuestions = pronunciationUsedWords.length;
     scoreElement.textContent = `Puntuación: ${pronunciationScore}/${pronunciationTotalQuestions}`;
     progress.style.width = `${(pronunciationUsedWords.length / pronunciationDeck.length) * 100}%`;
+    
+    console.log('Nueva palabra:', currentPronunciationWord);
 }
 
 // Verificar respuesta - MODIFICADO: No mostrar respuesta correcta al equivocarse
@@ -549,8 +598,6 @@ function checkAnswer(selected, element) {
         element.classList.add('incorrect');
         feedback.textContent = 'Incorrecto ❌ Intenta de nuevo';
         feedback.className = 'feedback incorrect';
-
-        // NO MOSTRAR LA RESPUESTA CORRECTA - ELIMINADO EL BLOQUE QUE LA MARCA EN VERDE
 
         // Permitir reintentar después de 1 segundo
         setTimeout(() => {
