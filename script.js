@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showScreen('pronunciation');
     });
 
-    // Botones de volver
+    // Botones de volver - TODOS LOS BOTONES DE VOLVER
     document.getElementById('back-from-japanese').addEventListener('click', function() {
         showScreen('language');
     });
@@ -286,10 +286,13 @@ document.addEventListener('DOMContentLoaded', function() {
         showScreen('pronunciation');
     });
 
+    // ESTE ES EL BOTÓN QUE FALTABA - VOLVER DESDE EL JUEGO DE PRONUNCIACIÓN
     document.getElementById('back-from-pronunciation-game').addEventListener('click', function() {
+        // Si estamos en medio de un juego de pronunciación, volver a selección de niveles
         if (pronunciationDeck.length > 0) {
             showScreen('englishPronunciation');
         } else {
+            // Si no hay deck activo, volver al menú de pronunciación
             showScreen('pronunciation');
         }
     });
@@ -713,12 +716,14 @@ function showPronunciationResults() {
     showScreen('results');
 }
 
-// Volver a selección
+// Volver a selección - FUNCIÓN MEJORADA
 function backToSelection() {
     // Determinar de dónde venimos basado en qué decks están activos
     if (pronunciationDeck.length > 0) {
-        // Venimos de pronunciación
+        // Venimos de pronunciación - volver a selección de niveles de pronunciación
         showScreen('englishPronunciation');
+        // Resetear el deck de pronunciación para limpiar el estado
+        pronunciationDeck = [];
     } else if (currentType === 'japanese') {
         showScreen('japaneseDecks');
     } else if (currentType === 'english') {
