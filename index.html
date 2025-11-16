@@ -25,70 +25,7 @@
             </div>
         </div>
     </div>
-<!-- Agregar después de la pantalla de idioma -->
-<div id="screen-multiplayer-setup" class="screen">
-    <div class="container">
-        <h1>👥 Modo Multijugador</h1>
-        <div class="player-setup">
-            <div class="player-input">
-                <label for="player1">Jugador 1:</label>
-                <input type="text" id="player1" placeholder="Nombre del jugador 1" value="Jugador 1">
-            </div>
-            <div class="player-input">
-                <label for="player2">Jugador 2:</label>
-                <input type="text" id="player2" placeholder="Nombre del jugador 2" value="Jugador 2">
-            </div>
-        </div>
-        <div class="game-options">
-            <h3>Configuración del juego:</h3>
-            <div class="option-group">
-                <label for="rounds">Número de rondas por jugador:</label>
-                <select id="rounds">
-                    <option value="3">3</option>
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-            <div class="option-group">
-                <label for="time-limit">Límite de tiempo (segundos):</label>
-                <select id="time-limit">
-                    <option value="0">Sin límite</option>
-                    <option value="15">15</option>
-                    <option value="30" selected>30</option>
-                    <option value="60">60</option>
-                </select>
-            </div>
-        </div>
-        <div class="button-group">
-            <button id="start-multiplayer-game">Comenzar Juego</button>
-            <button class="back-btn" id="back-from-multiplayer-setup">← Volver</button>
-        </div>
-    </div>
-</div>
 
-<!-- Pantalla de turno multiplayer -->
-<div id="screen-multiplayer-turn" class="screen">
-    <div class="container">
-        <h1 id="current-player-turn">🎯 Turno de Jugador</h1>
-        <div class="player-info">
-            <div class="player-stats">
-                <div id="player1-stats" class="player-stat">
-                    <span class="player-name">Jugador 1</span>
-                    <span class="player-score">0 puntos</span>
-                </div>
-                <div id="player2-stats" class="player-stat">
-                    <span class="player-name">Jugador 2</span>
-                    <span class="player-score">0 puntos</span>
-                </div>
-            </div>
-        </div>
-        <div class="turn-info">
-            <p id="turn-message">Prepárate para la siguiente pregunta...</p>
-            <div class="countdown" id="turn-countdown">3</div>
-        </div>
-        <button id="start-turn">Comenzar Turno</button>
-    </div>
-</div>
     <!-- PANTALLA MAZOS JAPONÉS -->
     <div id="screen-japanese-decks" class="screen">
         <div class="container">
